@@ -116,13 +116,14 @@ const Navbar = ({ language, setLanguage }) => {
 
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1">
-                    <button
+                    <Link
+                      to="/profile"
                       onClick={() => setIsDropdownOpen(false)}
                       className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-50 flex items-center gap-2"
                     >
                       <User size={16} />
                       {content[language].profile}
-                    </button>
+                    </Link>
                     <button
                       onClick={() => setIsDropdownOpen(false)}
                       className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-50 flex items-center gap-2"
@@ -205,13 +206,14 @@ const Navbar = ({ language, setLanguage }) => {
 
             {user ? (
               <>
-                <button
+                <Link
+                  to="/profile"
                   onClick={() => setIsOpen(false)}
                   className="flex items-center gap-2 w-full text-left text-gray-700 hover:text-gov-blue-600 hover:bg-gray-50 py-3 px-4 rounded-lg font-medium transition-all"
                 >
                   <User size={18} />
                   {content[language].profile}
-                </button>
+                </Link>
                 <button
                   onClick={() => setIsOpen(false)}
                   className="flex items-center gap-2 w-full text-left text-gray-700 hover:text-gov-blue-600 hover:bg-gray-50 py-3 px-4 rounded-lg font-medium transition-all"

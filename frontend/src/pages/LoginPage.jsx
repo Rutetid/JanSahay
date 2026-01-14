@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
 import { Mail, Lock, User, Loader2, Sparkles, Shield, Zap, ArrowRight } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
@@ -164,26 +163,17 @@ const LoginPage = ({ language = 'en' }) => {
             <span className="text-2xl font-bold">JanSahay</span>
           </Link>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
+          <div>
             <h1 className="text-5xl font-bold mb-6 leading-tight">
               {content[language].heroTitle}
             </h1>
             <p className="text-xl text-blue-100 mb-12">
               {content[language].heroSubtitle}
             </p>
-          </motion.div>
+          </div>
 
           <div className="space-y-6">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex items-start gap-4"
-            >
+            <div className="flex items-start gap-4">
               <div className="flex-shrink-0 w-12 h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
                 <Zap className="w-6 h-6 text-yellow-300" />
               </div>
@@ -191,14 +181,9 @@ const LoginPage = ({ language = 'en' }) => {
                 <h3 className="text-lg font-semibold mb-1">{content[language].feature1}</h3>
                 <p className="text-blue-100">{content[language].feature1Desc}</p>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex items-start gap-4"
-            >
+            <div className="flex items-start gap-4">
               <div className="flex-shrink-0 w-12 h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
                 <Shield className="w-6 h-6 text-green-300" />
               </div>
@@ -206,14 +191,9 @@ const LoginPage = ({ language = 'en' }) => {
                 <h3 className="text-lg font-semibold mb-1">{content[language].feature2}</h3>
                 <p className="text-blue-100">{content[language].feature2Desc}</p>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex items-start gap-4"
-            >
+            <div className="flex items-start gap-4">
               <div className="flex-shrink-0 w-12 h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
                 <Sparkles className="w-6 h-6 text-blue-300" />
               </div>
@@ -221,13 +201,13 @@ const LoginPage = ({ language = 'en' }) => {
                 <h3 className="text-lg font-semibold mb-1">{content[language].feature3}</h3>
                 <p className="text-blue-100">{content[language].feature3Desc}</p>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Right Side - Form Section */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50 pattern-dots">
         <div className="w-full max-w-md">
           {/* Mobile Header */}
           <div className="lg:hidden mb-8 text-center">
@@ -237,12 +217,7 @@ const LoginPage = ({ language = 'en' }) => {
             </Link>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="bg-white rounded-2xl shadow-xl p-8"
-          >
+          <div className="bg-white rounded-2xl shadow-xl p-8">
             {/* Toggle Tabs */}
             <div className="flex gap-2 mb-8 bg-gray-100 p-1 rounded-lg">
               <button
@@ -273,16 +248,9 @@ const LoginPage = ({ language = 'en' }) => {
               </button>
             </div>
 
-            <AnimatePresence mode="wait">
-              {isLogin ? (
-                <motion.div
-                  key="login"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="mb-6">
+            {isLogin ? (
+              <div>
+                <div className="mb-6">
                     <h2 className="text-2xl font-bold text-gray-900 mb-2">
                       {content[language].login}
                     </h2>
@@ -346,15 +314,9 @@ const LoginPage = ({ language = 'en' }) => {
                       )}
                     </Button>
                   </form>
-                </motion.div>
+                </div>
               ) : (
-                <motion.div
-                  key="signup"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.3 }}
-                >
+                <div>
                   <div className="mb-6">
                     <h2 className="text-2xl font-bold text-gray-900 mb-2">
                       {content[language].signup}
@@ -451,9 +413,8 @@ const LoginPage = ({ language = 'en' }) => {
                       )}
                     </Button>
                   </form>
-                </motion.div>
+                </div>
               )}
-            </AnimatePresence>
 
             {/* Divider */}
             <div className="relative my-6">
@@ -505,7 +466,7 @@ const LoginPage = ({ language = 'en' }) => {
                 ← {content[language].backToHome}
               </Link>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>
