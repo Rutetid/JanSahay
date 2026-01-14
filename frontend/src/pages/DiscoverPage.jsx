@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ArrowRight, ArrowLeft, Sparkles, User, Calendar, MapPin, Home, Briefcase, DollarSign, Users } from 'lucide-react'
+import { motion } from 'motion/react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -242,10 +243,10 @@ const DiscoverPage = ({ language, setLanguage }) => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-semibold text-gray-900 font-poppins mb-2">
+          <h1 className="pt-10 text-4xl font-semibold text-gray-900 font-poppins mb-2">
             {content[language].title}
           </h1>
-          <p className="text-gray-600 text-sm">{content[language].subtitle}</p>
+          <p className="text-gray-600 text-lg">{content[language].subtitle}</p>
           
           {/* Step indicators */}
           <div className="flex justify-center gap-2 mt-6">
@@ -256,7 +257,7 @@ const DiscoverPage = ({ language, setLanguage }) => {
                   index === currentStep
                     ? 'w-8 bg-gov-blue-600'
                     : index < currentStep
-                    ? 'w-2 bg-gov-green-500'
+                    ? 'w-2 bg-gov-blue-500'
                     : 'w-2 bg-gray-300'
                 }`}
               />
@@ -265,8 +266,8 @@ const DiscoverPage = ({ language, setLanguage }) => {
         </div>
 
         {/* Question Card */}
-        <Card className="border border-gray-200 shadow-sm">
-          <CardContent className="p-8">
+        <Card className="border border-gray-200 shadow-sm min-h-[350px] flex flex-col">
+        <CardContent className="p-8 flex-grow flex flex-col">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-full bg-gov-blue-50 flex items-center justify-center flex-shrink-0">
                 <Icon className="w-5 h-5 text-gov-blue-600" />
@@ -277,7 +278,7 @@ const DiscoverPage = ({ language, setLanguage }) => {
             </div>
 
             {/* Input Fields */}
-            <div className="space-y-3">
+            <div className="space-y-3 flex-grow">
               {currentStepData.options ? (
                 currentStepData.options.length <= 3 ? (
                   // Radio Group for few options
@@ -321,11 +322,46 @@ const DiscoverPage = ({ language, setLanguage }) => {
                     </SelectContent>
                   </Select>
                 )
+              ) : currentStepData.id === 'age' ? (
+                // Age Slider
+                <div className="space-y-6">
+                  <motion.div 
+                    className="relative pt-2"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4 }}
+                  >
+                    <input
+                      type="range"
+                      min="0"
+                      max="115"
+                      value={formData.age || 0}
+                      onChange={(e) => updateFormData('age', e.target.value)}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                      style={{
+                        background: `linear-gradient(to right, rgb(59 130 246) 0%, rgb(59 130 246) ${(formData.age || 0) / 115 * 100}%, rgb(229 231 235) ${(formData.age || 0) / 115 * 100}%, rgb(229 231 235) 100%)`
+                      }}
+                    />
+                  </motion.div>
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.4, delay: 0.1 }}
+                    className="flex justify-center"
+                  >
+                    <div className="inline-flex items-center justify-center px-8 py-4 bg-gov-blue-50 border-2 border-gov-blue-200 rounded-xl">
+                      <span className="text-4xl font-bold text-gov-blue-600">
+                        {formData.age || 0}
+                      </span>
+                      <span className="ml-2 text-lg text-gray-600">years</span>
+                    </div>
+                  </motion.div>
+                </div>
               ) : (
                 // Text Input
                 <div>
                   <Input
-                    type={currentStepData.id === 'age' || currentStepData.id === 'income' ? 'number' : 'text'}
+                    type={currentStepData.id === 'income' ? 'number' : 'text'}
                     placeholder={currentStepData.placeholder}
                     value={formData[currentStepData.id]}
                     onChange={(e) => updateFormData(currentStepData.id, e.target.value)}
@@ -335,17 +371,16 @@ const DiscoverPage = ({ language, setLanguage }) => {
               )}
             </div>
           </CardContent>
-        </Card>
 
         {/* Navigation Buttons */}
-        <div className="flex items-center justify-between mt-6">
+        <div className="flex items-center justify-between mt-2 px-8 pb-5">
           <div className="flex gap-3">
             {currentStep > 0 && (
-              <Button
+                <Button
                 variant="outline"
                 onClick={handleBack}
                 className="gap-2"
-              >
+                >
                 <ArrowLeft className="w-4 h-4" />
                 {content[language].back}
               </Button>
@@ -357,7 +392,7 @@ const DiscoverPage = ({ language, setLanguage }) => {
               variant="ghost"
               onClick={handleSkip}
               className="text-gray-600"
-            >
+              >
               {content[language].skip}
             </Button>
             <Button
@@ -370,6 +405,7 @@ const DiscoverPage = ({ language, setLanguage }) => {
             </Button>
           </div>
         </div>
+        </Card>
       </div>
     </div>
   )
