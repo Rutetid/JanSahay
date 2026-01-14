@@ -10,7 +10,7 @@ embeddings = HuggingFaceEmbeddings(
 )
 
 db = FAISS.load_local(
-    "RAG/jansahay_vector_db",
+    "RAG/chatbot/jansahay_vector_db",
     embeddings,
     allow_dangerous_deserialization=True
 )
