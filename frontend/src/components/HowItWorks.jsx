@@ -1,56 +1,53 @@
-import { User, Cpu, Search, CheckCircle } from 'lucide-react'
+import { FileText, Bot, Sparkles } from 'lucide-react'
+import { Card, CardHeader, CardTitle, CardDescription } from './ui/card'
 
 const HowItWorks = ({ language }) => {
   const content = {
     en: {
       title: 'How It Works',
-      subtitle: 'Four simple steps to discover your perfect scheme match',
+      subtitle: 'Three simple steps to find your benefits',
       steps: [
         {
-          icon: User,
-          title: 'User Input',
-          description: 'Share your basic details: age, income, location, and family information'
+          icon: FileText,
+          title: '1. Share Your Details',
+          description: 'Fill out a simple form with your basic information like age, income, occupation, and location.',
+          color: 'blue'
         },
         {
-          icon: Cpu,
-          title: 'Eligibility Engine',
-          description: 'Our AI analyzes your profile against thousands of scheme criteria'
+          icon: Bot,
+          title: '2. AI Analysis',
+          description: 'Our AI instantly analyzes your profile against hundreds of government schemes and their eligibility criteria.',
+          color: 'purple'
         },
         {
-          icon: Search,
-          title: 'Scheme Query',
-          description: 'We search through comprehensive government databases instantly'
-        },
-        {
-          icon: CheckCircle,
-          title: 'Match & Display',
-          description: 'Get personalized results with clear eligibility and application steps'
+          icon: Sparkles,
+          title: '3. Get Your Results',
+          description: 'Receive a personalized list of schemes you qualify for, complete with application links and guidance.',
+          color: 'green'
         }
       ]
     },
     hi: {
       title: 'यह कैसे काम करता है',
-      subtitle: 'अपनी सही योजना से मिलान के लिए चार सरल चरण',
+      subtitle: 'अपने लाभों को खोजने के लिए तीन सरल चरण',
       steps: [
         {
-          icon: User,
-          title: 'उपयोगकर्ता इनपुट',
-          description: 'अपना बुनियादी विवरण साझा करें: उम्र, आय, स्थान और पारिवारिक जानकारी'
+          icon: FileText,
+          title: '1. अपना विवरण साझा करें',
+          description: 'अपनी बुनियादी जानकारी जैसे उम्र, आय, व्यवसाय और स्थान के साथ एक सरल फॉर्म भरें।',
+          color: 'blue'
         },
         {
-          icon: Cpu,
-          title: 'पात्रता इंजन',
-          description: 'हमारी AI हजारों योजना मानदंडों के खिलाफ आपकी प्रोफ़ाइल का विश्लेषण करती है'
+          icon: Bot,
+          title: '2. AI विश्लेषण',
+          description: 'हमारा AI तुरंत सैकड़ों सरकारी योजनाओं और उनकी पात्रता मानदंडों के खिलाफ आपकी प्रोफ़ाइल का विश्लेषण करता है।',
+          color: 'purple'
         },
         {
-          icon: Search,
-          title: 'योजना क्वेरी',
-          description: 'हम तुरंत व्यापक सरकारी डेटाबेस खोजते हैं'
-        },
-        {
-          icon: CheckCircle,
-          title: 'मैच और प्रदर्शन',
-          description: 'स्पष्ट पात्रता और आवेदन चरणों के साथ व्यक्तिगत परिणाम प्राप्त करें'
+          icon: Sparkles,
+          title: '3. अपने परिणाम प्राप्त करें',
+          description: 'आवेदन लिंक और मार्गदर्शन के साथ पूर्ण, आप जिन योजनाओं के लिए योग्य हैं, उनकी व्यक्तिगत सूची प्राप्त करें।',
+          color: 'green'
         }
       ]
     }
@@ -58,43 +55,41 @@ const HowItWorks = ({ language }) => {
 
   const { title, subtitle, steps } = content[language]
 
-  return (
-    <section className="py-20 px-4 bg-white">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-gov-blue-800 mb-4">
-            {title}
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            {subtitle}
-          </p>
-        </div>
+  const colorClasses = {
+    blue: 'border-blue-100 hover:border-blue-300 bg-blue-100',
+    purple: 'border-purple-100 hover:border-purple-300 bg-purple-100',
+    green: 'border-green-100 hover:border-green-300 bg-green-100'
+  }
 
-        <div className="relative">
-          <div className="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-gov-blue-200 via-gov-green-400 to-gov-blue-200 transform -translate-y-1/2 z-0"></div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
-            {steps.map((step, index) => {
-              const Icon = step.icon
-              return (
-                <div key={index} className="flex flex-col items-center text-center">
-                  <div className="w-20 h-20 bg-gradient-to-br from-gov-blue-600 to-gov-blue-800 rounded-full flex items-center justify-center mb-6 shadow-lg relative">
-                    <Icon className="text-white" size={32} />
-                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-gov-green-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md">
-                      {index + 1}
-                    </div>
-                  </div>
-                  <h3 className="text-xl font-bold text-gov-blue-800 mb-3">
-                    {step.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    {step.description}
-                  </p>
+  const iconColorClasses = {
+    blue: 'text-gov-blue-600',
+    purple: 'text-purple-600',
+    green: 'text-green-600'
+  }
+
+  return (
+    <section id="how-it-works" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="text-center mb-12">
+        <h2 className="text-4xl font-bold mb-4">{title}</h2>
+        <p className="text-xl text-gray-600">{subtitle}</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {steps.map((step, index) => {
+          const Icon = step.icon
+          return (
+            <Card key={index} className={`border-2 ${colorClasses[step.color]} transition-colors`}>
+              <CardHeader>
+                <div className={`w-12 h-12 ${colorClasses[step.color]} rounded-full flex items-center justify-center mb-4`}>
+                  <Icon className={`w-6 h-6 ${iconColorClasses[step.color]}`} />
                 </div>
-              )
-            })}
-          </div>
-        </div>
+                <CardTitle>{step.title}</CardTitle>
+                <CardDescription className="text-base">
+                  {step.description}
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          )
+        })}
       </div>
     </section>
   )

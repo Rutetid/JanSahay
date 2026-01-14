@@ -1,52 +1,77 @@
-import { Target, Globe, Smartphone } from 'lucide-react'
+import { Bot, Shield, Users, Sparkles, CheckCircle, FileText } from 'lucide-react'
+import { Card, CardHeader, CardTitle, CardDescription } from './ui/card'
 
 const KeyFeatures = ({ language }) => {
   const content = {
     en: {
-      title: 'Key Features',
-      subtitle: 'Everything you need to access government benefits',
+      title: 'Why Choose JanSahay?',
+      subtitle: 'Built with your needs in mind',
       features: [
         {
-          icon: Target,
-          title: 'Personalized Recommendations',
-          description: 'AI-powered matching engine that understands your unique situation and finds schemes tailored specifically for you.',
-          color: 'from-gov-blue-600 to-gov-blue-700'
+          icon: Bot,
+          title: 'AI-Powered Matching',
+          description: 'Advanced artificial intelligence ensures accurate scheme recommendations based on your unique profile.'
         },
         {
-          icon: Globe,
-          title: 'Multi-language & Voice Support',
-          description: 'Access information in 12+ Indian languages with built-in voice assistance for those who prefer speaking over typing.',
-          color: 'from-gov-green-500 to-gov-green-600'
+          icon: Shield,
+          title: 'Secure & Private',
+          description: 'Your personal information is encrypted and never shared. We prioritize your data security.'
         },
         {
-          icon: Smartphone,
-          title: 'Mobile-Friendly Design',
-          description: 'Optimized for smartphones with simple navigation, ensuring accessibility even on low-end devices with limited internet.',
-          color: 'from-gov-blue-500 to-gov-green-500'
+          icon: Users,
+          title: 'Easy to Use',
+          description: 'Simple, intuitive interface designed for everyone. No technical knowledge required.'
+        },
+        {
+          icon: Sparkles,
+          title: 'Comprehensive Database',
+          description: 'Access to 500+ central and state government schemes across various categories.'
+        },
+        {
+          icon: CheckCircle,
+          title: 'Real-Time Updates',
+          description: 'Our database is regularly updated with new schemes and policy changes.'
+        },
+        {
+          icon: FileText,
+          title: 'Application Guidance',
+          description: 'Step-by-step instructions and direct links to help you apply for schemes easily.'
         }
       ]
     },
     hi: {
-      title: 'मुख्य विशेषताएं',
-      subtitle: 'सरकारी लाभों तक पहुंचने के लिए आपको जो कुछ भी चाहिए',
+      title: 'जनसहाय क्यों चुनें?',
+      subtitle: 'आपकी जरूरतों को ध्यान में रखकर बनाया गया',
       features: [
         {
-          icon: Target,
-          title: 'व्यक्तिगत सिफारिशें',
-          description: 'AI-संचालित मिलान इंजन जो आपकी अनूठी स्थिति को समझता है और विशेष रूप से आपके लिए तैयार योजनाएं ढूंढता है।',
-          color: 'from-gov-blue-600 to-gov-blue-700'
+          icon: Bot,
+          title: 'AI-संचालित मिलान',
+          description: 'उन्नत कृत्रिम बुद्धिमत्ता आपकी अनूठी प्रोफ़ाइल के आधार पर सटीक योजना सिफारिशें सुनिश्चित करती है।'
         },
         {
-          icon: Globe,
-          title: 'बहु-भाषा और वॉयस समर्थन',
-          description: '12+ भारतीय भाषाओं में अंतर्निहित वॉयस सहायता के साथ जानकारी प्राप्त करें उन लोगों के लिए जो टाइपिंग से बोलना पसंद करते हैं।',
-          color: 'from-gov-green-500 to-gov-green-600'
+          icon: Shield,
+          title: 'सुरक्षित और निजी',
+          description: 'आपकी व्यक्तिगत जानकारी एन्क्रिप्टेड है और कभी साझा नहीं की जाती। हम आपकी डेटा सुरक्षा को प्राथमिकता देते हैं।'
         },
         {
-          icon: Smartphone,
-          title: 'मोबाइल-अनुकूल डिजाइन',
-          description: 'सरल नेविगेशन के साथ स्मार्टफोन के लिए अनुकूलित, सीमित इंटरनेट वाले कम अंत उपकरणों पर भी सुलभता सुनिश्चित करना।',
-          color: 'from-gov-blue-500 to-gov-green-500'
+          icon: Users,
+          title: 'उपयोग में आसान',
+          description: 'सभी के लिए डिज़ाइन किया गया सरल, सहज इंटरफ़ेस। किसी तकनीकी ज्ञान की आवश्यकता नहीं।'
+        },
+        {
+          icon: Sparkles,
+          title: 'व्यापक डेटाबेस',
+          description: 'विभिन्न श्रेणियों में 500+ केंद्रीय और राज्य सरकारी योजनाओं तक पहुंच।'
+        },
+        {
+          icon: CheckCircle,
+          title: 'रीयल-टाइम अपडेट',
+          description: 'हमारा डेटाबेस नियमित रूप से नई योजनाओं और नीति परिवर्तनों के साथ अपडेट किया जाता है।'
+        },
+        {
+          icon: FileText,
+          title: 'आवेदन मार्गदर्शन',
+          description: 'योजनाओं के लिए आसानी से आवेदन करने में मदद के लिए चरण-दर-चरण निर्देश और प्रत्यक्ष लिंक।'
         }
       ]
     }
@@ -55,35 +80,25 @@ const KeyFeatures = ({ language }) => {
   const { title, subtitle, features } = content[language]
 
   return (
-    <section className="py-20 px-4 bg-gray-50">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold text-gov-blue-800 mb-4">
-            {title}
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            {subtitle}
-          </p>
+    <section id="features" className="bg-gray-50 py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold mb-4">{title}</h2>
+          <p className="text-xl text-gray-600">{subtitle}</p>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => {
             const Icon = feature.icon
             return (
-              <div
-                key={index}
-                className="group bg-white rounded-xl p-8 shadow-md hover:shadow-2xl transition-all transform hover:-translate-y-2"
-              >
-                <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                  <Icon className="text-white" size={32} />
-                </div>
-                <h3 className="text-2xl font-bold text-gov-blue-800 mb-4">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {feature.description}
-                </p>
-              </div>
+              <Card key={index}>
+                <CardHeader>
+                  <Icon className="w-10 h-10 text-gov-blue-600 mb-2" />
+                  <CardTitle>{feature.title}</CardTitle>
+                  <CardDescription>
+                    {feature.description}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
             )
           })}
         </div>
