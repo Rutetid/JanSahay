@@ -1,0 +1,253 @@
+[
+  {
+    "scheme_id": "PMAY01",
+    "scheme_name": "Pradhan Mantri Awas Yojana (PMAY)",
+    "category": "Housing",
+    "state": "All",
+    "eligibility": {
+      "min_age": 18,
+      "max_income": 300000,
+      "gender": "Any",
+      "category_allowed": ["SC", "ST", "OBC", "General"]
+    },
+    "benefits": "Financial assistance for building or buying a pucca house",
+    "documents_required": [
+      "Aadhaar Card",
+      "Income Certificate",
+      "Bank Account Details"
+    ],
+    "description_simple": "The government helps eligible citizens to build or buy a house by giving financial support."
+  },
+  {
+    "scheme_id": "PMUY02",
+    "scheme_name": "Pradhan Mantri Ujjwala Yojana (PMUY)",
+    "category": "Energy",
+    "state": "All",
+    "eligibility": {
+      "min_age": 18,
+      "max_income": 200000,
+      "gender": "Female",
+      "category_allowed": ["BPL"]
+    },
+    "benefits": "Free LPG gas connection for women from poor families",
+    "documents_required": [
+      "Aadhaar Card",
+      "BPL Ration Card"
+    ],
+    "description_simple": "This scheme provides free gas connections to women from poor households for clean cooking."
+  },
+  {
+    "scheme_id": "PMKISAN03",
+    "scheme_name": "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)",
+    "category": "Agriculture",
+    "state": "All",
+    "eligibility": {
+      "min_age": 18,
+      "occupation": "Farmer",
+      "land_required": true
+    },
+    "benefits": "₹6000 per year financial support to farmers",
+    "documents_required": [
+      "Aadhaar Card",
+      "Land Ownership Documents",
+      "Bank Account Details"
+    ],
+    "description_simple": "The government gives farmers ₹6000 every year to help with farming expenses."
+  },
+  {
+    "scheme_id": "NSAP04",
+    "scheme_name": "National Social Assistance Programme (Old Age Pension)",
+    "category": "Pension",
+    "state": "All",
+    "eligibility": {
+      "min_age": 60,
+      "max_income": 150000
+    },
+    "benefits": "Monthly pension for senior citizens from poor families",
+    "documents_required": [
+      "Aadhaar Card",
+      "Age Proof",
+      "Income Certificate"
+    ],
+    "description_simple": "Senior citizens from low-income families receive a monthly pension for financial support."
+  },
+  {
+    "scheme_id": "SSY05",
+    "scheme_name": "Sukanya Samriddhi Yojana (SSY)",
+    "category": "Savings",
+    "state": "All",
+    "eligibility": {
+      "gender": "Female",
+      "max_age": 10
+    },
+    "benefits": "High interest savings scheme for girl child education and marriage",
+    "documents_required": [
+      "Birth Certificate of Girl Child",
+      "Aadhaar Card of Parent/Guardian"
+    ],
+    "description_simple": "This scheme helps parents save money for their daughter's education and future."
+  },
+  {
+    "scheme_id": "MGNREGA06",
+    "scheme_name": "Mahatma Gandhi National Rural Employment Guarantee Act (MGNREGA)",
+    "category": "Employment",
+    "state": "All",
+    "eligibility": {
+      "min_age": 18,
+      "gender": "Any"
+    },
+    "benefits": "Guaranteed 100 days of wage employment in rural areas",
+    "documents_required": [
+      "Aadhaar Card",
+      "Job Card",
+      "Bank Account Details"
+    ],
+    "description_simple": "This scheme provides guaranteed employment to rural households for livelihood support."
+  },
+  {
+    "scheme_id": "PMJDY07",
+    "scheme_name": "Pradhan Mantri Jan Dhan Yojana (PMJDY)",
+    "category": "Banking",
+    "state": "All",
+    "eligibility": {
+      "min_age": 10,
+      "gender": "Any"
+    },
+    "benefits": "Zero-balance bank account with insurance and overdraft facility",
+    "documents_required": [
+      "Aadhaar Card",
+      "Address Proof"
+    ],
+    "description_simple": "This scheme helps citizens open a bank account with zero balance and basic banking benefits."
+  },
+  {
+    "scheme_id": "PMSBY08",
+    "scheme_name": "Pradhan Mantri Suraksha Bima Yojana (PMSBY)",
+    "category": "Insurance",
+    "state": "All",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 70
+    },
+    "benefits": "Accidental insurance cover of ₹2 lakh",
+    "documents_required": [
+      "Aadhaar Card",
+      "Bank Account Details"
+    ],
+    "description_simple": "This scheme provides low-cost accidental insurance to citizens."
+  },
+  {
+    "scheme_id": "PMJJBY09",
+    "scheme_name": "Pradhan Mantri Jeevan Jyoti Bima Yojana (PMJJBY)",
+    "category": "Insurance",
+    "state": "All",
+    "eligibility": {
+      "min_age": 18,
+      "max_age": 50
+    },
+    "benefits": "Life insurance cover of ₹2 lakh",
+    "documents_required": [
+      "Aadhaar Card",
+      "Bank Account Details"
+    ],
+    "description_simple": "This scheme offers affordable life insurance to support families in case of death."
+  },
+  {
+    "scheme_id": "PMFBY10",
+    "scheme_name": "Pradhan Mantri Fasal Bima Yojana (PMFBY)",
+    "category": "Agriculture",
+    "state": "All",
+    "eligibility": {
+      "occupation": "Farmer"
+    },
+    "benefits": "Crop insurance against natural calamities",
+    "documents_required": [
+      "Aadhaar Card",
+      "Land Records",
+      "Bank Account Details"
+    ],
+    "description_simple": "This scheme protects farmers from crop losses due to natural disasters."
+  },
+  {
+    "scheme_id": "NSIG11",
+    "scheme_name": "National Social Assistance Programme (Disability Pension)",
+    "category": "Pension",
+    "state": "All",
+    "eligibility": {
+      "min_age": 18,
+      "disability_required": true
+    },
+    "benefits": "Monthly pension for persons with disabilities",
+    "documents_required": [
+      "Aadhaar Card",
+      "Disability Certificate"
+    ],
+    "description_simple": "This scheme provides financial support to persons with disabilities."
+  },
+  {
+    "scheme_id": "PMKVY12",
+    "scheme_name": "Pradhan Mantri Kaushal Vikas Yojana (PMKVY)",
+    "category": "Skill Development",
+    "state": "All",
+    "eligibility": {
+      "min_age": 15,
+      "max_age": 45
+    },
+    "benefits": "Free skill training and certification",
+    "documents_required": [
+      "Aadhaar Card",
+      "Education Certificate"
+    ],
+    "description_simple": "This scheme helps youth learn new skills and improve job opportunities."
+  },
+  {
+    "scheme_id": "NMMS13",
+    "scheme_name": "National Means-cum-Merit Scholarship Scheme (NMMS)",
+    "category": "Education",
+    "state": "All",
+    "eligibility": {
+      "min_age": 11,
+      "max_income": 150000
+    },
+    "benefits": "Scholarship for economically weaker students",
+    "documents_required": [
+      "Aadhaar Card",
+      "Income Certificate",
+      "School Bonafide Certificate"
+    ],
+    "description_simple": "This scholarship supports students from poor families to continue education."
+  },
+  {
+    "scheme_id": "PMMVY14",
+    "scheme_name": "Pradhan Mantri Matru Vandana Yojana (PMMVY)",
+    "category": "Women Welfare",
+    "state": "All",
+    "eligibility": {
+      "gender": "Female",
+      "pregnant": true
+    },
+    "benefits": "Cash assistance for pregnant and lactating women",
+    "documents_required": [
+      "Aadhaar Card",
+      "Maternity Certificate"
+    ],
+    "description_simple": "This scheme supports pregnant women with financial assistance for health and nutrition."
+  },
+  {
+    "scheme_id": "DDUGKY15",
+    "scheme_name": "Deen Dayal Upadhyaya Grameen Kaushalya Yojana (DDU-GKY)",
+    "category": "Skill Development",
+    "state": "All",
+    "eligibility": {
+      "min_age": 15,
+      "max_age": 35,
+      "category_allowed": ["SC", "ST", "OBC", "BPL"]
+    },
+    "benefits": "Skill training and placement for rural youth",
+    "documents_required": [
+      "Aadhaar Card",
+      "Rural Residence Proof"
+    ],
+    "description_simple": "This scheme provides skill training and job placement for rural youth."
+  }
+]
