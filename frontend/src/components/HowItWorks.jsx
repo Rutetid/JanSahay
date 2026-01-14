@@ -17,13 +17,13 @@ const HowItWorks = ({ language }) => {
           icon: Bot,
           title: '2. AI Analysis',
           description: 'Our AI instantly analyzes your profile against hundreds of government schemes and their eligibility criteria.',
-          color: 'purple'
+          color: 'blue'
         },
         {
           icon: Sparkles,
           title: '3. Get Your Results',
           description: 'Receive a personalized list of schemes you qualify for, complete with application links and guidance.',
-          color: 'green'
+          color: 'blue'
         }
       ]
     },
@@ -41,13 +41,13 @@ const HowItWorks = ({ language }) => {
           icon: Bot,
           title: '2. AI विश्लेषण',
           description: 'हमारा AI तुरंत सैकड़ों सरकारी योजनाओं और उनकी पात्रता मानदंडों के खिलाफ आपकी प्रोफ़ाइल का विश्लेषण करता है।',
-          color: 'purple'
+          color: 'blue'
         },
         {
           icon: Sparkles,
           title: '3. अपने परिणाम प्राप्त करें',
           description: 'आवेदन लिंक और मार्गदर्शन के साथ पूर्ण, आप जिन योजनाओं के लिए योग्य हैं, उनकी व्यक्तिगत सूची प्राप्त करें।',
-          color: 'green'
+          color: 'blue'
         }
       ]
     }

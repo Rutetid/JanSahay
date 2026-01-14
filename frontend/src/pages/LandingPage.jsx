@@ -8,7 +8,7 @@ import AIAssistant from '../components/AIAssistant'
 
 const LandingPage = ({ language, setLanguage }) => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pattern-dots">
       <Navbar language={language} setLanguage={setLanguage} />
       <HeroSection language={language} />
       <HowItWorks language={language} />

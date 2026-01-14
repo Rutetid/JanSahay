@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import LandingPage from './pages/LandingPage'
 import DiscoverPage from './pages/DiscoverPage'
+import LoginPage from './pages/LoginPage'
 import { useState } from 'react'
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
     <Routes>
       <Route path="/" element={<LandingPage language={language} setLanguage={setLanguage} />} />
       <Route path="/discover" element={<DiscoverPage language={language} setLanguage={setLanguage} />} />
+      <Route path="/login" element={<LoginPage language={language} />} />
     </Routes>
   )
 }

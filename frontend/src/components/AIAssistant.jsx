@@ -21,7 +21,7 @@ const AIAssistant = ({ language }) => {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-br from-gov-green-500 to-gov-green-600 text-white rounded-full shadow-2xl hover:shadow-3xl hover:scale-110 transition-all z-50 flex items-center justify-center group"
+        className="fixed bottom-6 right-6 w-16 h-16 bg-gov-blue-600 hover:bg-gov-blue-700 text-white rounded-full shadow-2xl hover:shadow-3xl hover:scale-110 transition-all z-50 flex items-center justify-center group"
       >
         {isOpen ? (
           <X size={28} className="group-hover:rotate-90 transition-transform" />
@@ -32,7 +32,7 @@ const AIAssistant = ({ language }) => {
 
       {isOpen && (
         <div className="fixed bottom-24 right-6 w-96 max-w-[calc(100vw-3rem)] bg-white rounded-2xl shadow-2xl z-50 overflow-hidden">
-          <div className="bg-gradient-to-r from-gov-blue-700 to-gov-blue-800 p-4 text-white">
+          <div className="bg-gov-blue-600 p-4 text-white">
             <h3 className="font-bold text-lg">{content[language].title}</h3>
           </div>
           

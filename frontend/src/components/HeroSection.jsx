@@ -34,7 +34,7 @@ const HeroSection = ({ language }) => {
   }
 
   return (
-    <div className="bg-gradient-to-b from-blue-50 to-white pt-16">
+    <div className=" pt-16">
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 text-center">
         <div className="max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 bg-blue-100 text-gov-blue-700 px-4 py-2 rounded-full mb-6">
@@ -64,15 +64,15 @@ const HeroSection = ({ language }) => {
 
           <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-sm text-gray-600">
             <div className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-green-600" />
+              <CheckCircle className="w-5 h-5 text-gov-blue-600" />
               <span>{content[language].free}</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-green-600" />
+              <CheckCircle className="w-5 h-5 text-gov-blue-600" />
               <span>{content[language].instant}</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-green-600" />
+              <CheckCircle className="w-5 h-5 text-gov-blue-600" />
               <span>{content[language].secure}</span>
             </div>
           </div>
@@ -89,13 +89,13 @@ const HeroSection = ({ language }) => {
           </Card>
           <Card className="border-none shadow-lg">
             <CardContent className="pt-6 text-center">
-              <div className="text-4xl font-bold text-purple-600 mb-2">50K+</div>
+              <div className="text-4xl font-bold text-gov-blue-600 mb-2">50K+</div>
               <div className="text-gray-600">{content[language].helped}</div>
             </CardContent>
           </Card>
           <Card className="border-none shadow-lg">
             <CardContent className="pt-6 text-center">
-              <div className="text-4xl font-bold text-green-600 mb-2">95%</div>
+              <div className="text-4xl font-bold text-gov-blue-600 mb-2">95%</div>
               <div className="text-gray-600">{content[language].accuracy}</div>
             </CardContent>
           </Card>

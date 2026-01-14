@@ -19,7 +19,7 @@ const CTASection = ({ language }) => {
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-      <Card className="bg-gradient-to-r from-gov-blue-600 to-purple-600 border-none">
+      <Card className="bg-blue-900 border-none">
         <CardContent className="pt-12 pb-12 text-center">
           <h2 className="text-4xl font-bold text-white mb-4">
             {content[language].title}
@@ -28,7 +28,7 @@ const CTASection = ({ language }) => {
             {content[language].subtitle}
           </p>
           <Link to="/discover">
-            <Button size="lg" variant="secondary" className="text-lg px-8">
+            <Button size="lg" variant="secondary" className="text-lg px-8 text-gray-900">
               {content[language].cta}
               <ArrowRight className="w-5 h-5" />
             </Button>

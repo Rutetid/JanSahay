@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ArrowRight, ArrowLeft, Sparkles, User, Calendar, MapPin, Home, Briefcase, DollarSign, Users } from 'lucide-react'
 import { motion } from 'motion/react'
+import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -8,6 +9,32 @@ import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import Navbar from '@/components/Navbar'
+
+const formSchema = z.object({
+  gender: z.enum(['male', 'female', 'other'], {
+    required_error: 'Please select your gender',
+  }),
+  age: z.string()
+    .min(1, 'Age is required')
+    .refine((val) => !isNaN(Number(val)) && Number(val) >= 0 && Number(val) <= 115, {
+      message: 'Age must be between 0 and 115',
+    }),
+  state: z.string().min(1, 'Please select your state'),
+  residence: z.enum(['urban', 'rural'], {
+    required_error: 'Please select your residence type',
+  }),
+  category: z.enum(['general', 'obc', 'sc', 'st', 'ews'], {
+    required_error: 'Please select your category',
+  }),
+  income: z.string()
+    .min(1, 'Income is required')
+    .refine((val) => !isNaN(Number(val)) && Number(val) >= 0, {
+      message: 'Income must be a valid positive number',
+    }),
+  occupation: z.enum(['govt_service', 'private', 'business', 'agriculture', 'student', 'unemployed'], {
+    required_error: 'Please select your occupation',
+  }),
+})
 
 const DiscoverPage = ({ language, setLanguage }) => {
   const [currentStep, setCurrentStep] = useState(0)
@@ -20,6 +47,7 @@ const DiscoverPage = ({ language, setLanguage }) => {
     income: '',
     occupation: ''
   })
+  const [errors, setErrors] = useState({})
 
   const content = {
     en: {
@@ -51,13 +79,42 @@ const DiscoverPage = ({ language, setLanguage }) => {
           title: 'Which state do you live in?',
           icon: MapPin,
           options: [
-            { value: 'delhi', label: 'Delhi' },
-            { value: 'maharashtra', label: 'Maharashtra' },
+            { value: 'andhra_pradesh', label: 'Andhra Pradesh' },
+            { value: 'arunachal_pradesh', label: 'Arunachal Pradesh' },
+            { value: 'assam', label: 'Assam' },
+            { value: 'bihar', label: 'Bihar' },
+            { value: 'chhattisgarh', label: 'Chhattisgarh' },
+            { value: 'goa', label: 'Goa' },
+            { value: 'gujarat', label: 'Gujarat' },
+            { value: 'haryana', label: 'Haryana' },
+            { value: 'himachal_pradesh', label: 'Himachal Pradesh' },
+            { value: 'jharkhand', label: 'Jharkhand' },
             { value: 'karnataka', label: 'Karnataka' },
+            { value: 'kerala', label: 'Kerala' },
+            { value: 'madhya_pradesh', label: 'Madhya Pradesh' },
+            { value: 'maharashtra', label: 'Maharashtra' },
+            { value: 'manipur', label: 'Manipur' },
+            { value: 'meghalaya', label: 'Meghalaya' },
+            { value: 'mizoram', label: 'Mizoram' },
+            { value: 'nagaland', label: 'Nagaland' },
+            { value: 'odisha', label: 'Odisha' },
+            { value: 'punjab', label: 'Punjab' },
+            { value: 'rajasthan', label: 'Rajasthan' },
+            { value: 'sikkim', label: 'Sikkim' },
             { value: 'tamil_nadu', label: 'Tamil Nadu' },
+            { value: 'telangana', label: 'Telangana' },
+            { value: 'tripura', label: 'Tripura' },
             { value: 'uttar_pradesh', label: 'Uttar Pradesh' },
+            { value: 'uttarakhand', label: 'Uttarakhand' },
             { value: 'west_bengal', label: 'West Bengal' },
-            { value: 'other', label: 'Other' }
+            { value: 'andaman_nicobar', label: 'Andaman and Nicobar Islands' },
+            { value: 'chandigarh', label: 'Chandigarh' },
+            { value: 'dadra_nagar_haveli_daman_diu', label: 'Dadra and Nagar Haveli and Daman and Diu' },
+            { value: 'delhi', label: 'Delhi' },
+            { value: 'jammu_kashmir', label: 'Jammu and Kashmir' },
+            { value: 'ladakh', label: 'Ladakh' },
+            { value: 'lakshadweep', label: 'Lakshadweep' },
+            { value: 'puducherry', label: 'Puducherry' }
           ]
         },
         {
@@ -83,9 +140,9 @@ const DiscoverPage = ({ language, setLanguage }) => {
         },
         {
           id: 'income',
-          title: 'What is your annual income?',
+          title: 'What is your annual income? (in Lakhs)',
           icon: DollarSign,
-          placeholder: 'Enter annual income (in ₹)'
+          placeholder: 'Enter annual income (in ₹ Lakhs)'
         },
         {
           id: 'occupation',
@@ -131,13 +188,42 @@ const DiscoverPage = ({ language, setLanguage }) => {
           title: 'आप किस राज्य में रहते हैं?',
           icon: MapPin,
           options: [
-            { value: 'delhi', label: 'दिल्ली' },
-            { value: 'maharashtra', label: 'महाराष्ट्र' },
+            { value: 'andhra_pradesh', label: 'आंध्र प्रदेश' },
+            { value: 'arunachal_pradesh', label: 'अरुणाचल प्रदेश' },
+            { value: 'assam', label: 'असम' },
+            { value: 'bihar', label: 'बिहार' },
+            { value: 'chhattisgarh', label: 'छत्तीसगढ़' },
+            { value: 'goa', label: 'गोवा' },
+            { value: 'gujarat', label: 'गुजरात' },
+            { value: 'haryana', label: 'हरियाणा' },
+            { value: 'himachal_pradesh', label: 'हिमाचल प्रदेश' },
+            { value: 'jharkhand', label: 'झारखंड' },
             { value: 'karnataka', label: 'कर्नाटक' },
+            { value: 'kerala', label: 'केरल' },
+            { value: 'madhya_pradesh', label: 'मध्य प्रदेश' },
+            { value: 'maharashtra', label: 'महाराष्ट्र' },
+            { value: 'manipur', label: 'मणिपुर' },
+            { value: 'meghalaya', label: 'मेघालय' },
+            { value: 'mizoram', label: 'मिजोरम' },
+            { value: 'nagaland', label: 'नागालैंड' },
+            { value: 'odisha', label: 'ओडिशा' },
+            { value: 'punjab', label: 'पंजाब' },
+            { value: 'rajasthan', label: 'राजस्थान' },
+            { value: 'sikkim', label: 'सिक्किम' },
             { value: 'tamil_nadu', label: 'तमिलनाडु' },
+            { value: 'telangana', label: 'तेलंगाना' },
+            { value: 'tripura', label: 'त्रिपुरा' },
             { value: 'uttar_pradesh', label: 'उत्तर प्रदेश' },
+            { value: 'uttarakhand', label: 'उत्तराखंड' },
             { value: 'west_bengal', label: 'पश्चिम बंगाल' },
-            { value: 'other', label: 'अन्य' }
+            { value: 'andaman_nicobar', label: 'अंडमान और निकोबार द्वीप समूह' },
+            { value: 'chandigarh', label: 'चंडीगढ़' },
+            { value: 'dadra_nagar_haveli_daman_diu', label: 'दादरा और नगर हवेली और दमन और दीव' },
+            { value: 'delhi', label: 'दिल्ली' },
+            { value: 'jammu_kashmir', label: 'जम्मू और कश्मीर' },
+            { value: 'ladakh', label: 'लद्दाख' },
+            { value: 'lakshadweep', label: 'लक्षद्वीप' },
+            { value: 'puducherry', label: 'पुडुचेरी' }
           ]
         },
         {
@@ -163,9 +249,9 @@ const DiscoverPage = ({ language, setLanguage }) => {
         },
         {
           id: 'income',
-          title: 'आपकी वार्षिक आय क्या है?',
+          title: 'आपकी वार्षिक आय क्या है? (लाख में)',
           icon: DollarSign,
-          placeholder: 'वार्षिक आय दर्ज करें (₹ में)'
+          placeholder: 'वार्षिक आय दर्ज करें (लाख ₹ में)'
         },
         {
           id: 'occupation',
@@ -191,9 +277,33 @@ const DiscoverPage = ({ language, setLanguage }) => {
 
   const updateFormData = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }))
+    // Clear error for this field when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: undefined }))
+    }
+  }
+
+  const validateCurrentStep = () => {
+    const currentField = currentStepData.id
+    try {
+      // Validate only the current field
+      const fieldSchema = formSchema.shape[currentField]
+      fieldSchema.parse(formData[currentField])
+      setErrors(prev => ({ ...prev, [currentField]: undefined }))
+      return true
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setErrors(prev => ({ ...prev, [currentField]: error.errors[0].message }))
+      }
+      return false
+    }
   }
 
   const handleNext = () => {
+    if (!validateCurrentStep()) {
+      return
+    }
+    
     if (currentStep < totalSteps - 1) {
       setCurrentStep(currentStep + 1)
     } else {
@@ -208,6 +318,10 @@ const DiscoverPage = ({ language, setLanguage }) => {
   }
 
   const handleSkip = () => {
+    // Clear error when skipping
+    const currentField = currentStepData.id
+    setErrors(prev => ({ ...prev, [currentField]: undefined }))
+    
     if (currentStep < totalSteps - 1) {
       setCurrentStep(currentStep + 1)
     } else {
@@ -216,13 +330,39 @@ const DiscoverPage = ({ language, setLanguage }) => {
   }
 
   const handleSubmit = () => {
-    console.log('Form Data:', formData)
-    // TODO: Navigate to results page or trigger scheme search
+    try {
+      const validatedData = formSchema.parse(formData)
+      console.log('Validated Form Data:', validatedData)
+      // TODO: Navigate to results page or trigger scheme search
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const newErrors = {}
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            newErrors[err.path[0]] = err.message
+          }
+        })
+        setErrors(newErrors)
+        console.error('Validation errors:', newErrors)
+      }
+    }
   }
 
   const isStepValid = () => {
-    const value = formData[currentStepData.id]
-    return value && value.trim() !== ''
+    const currentField = currentStepData.id
+    const value = formData[currentField]
+    
+    // Check if field has a value
+    if (!value || value.toString().trim() === '') {
+      return false
+    }
+    
+    // If there's an error for this field, it's not valid
+    if (errors[currentField]) {
+      return false
+    }
+    
+    return true
   }
 
   const Icon = currentStepData.icon
@@ -246,10 +386,10 @@ const DiscoverPage = ({ language, setLanguage }) => {
           <h1 className="pt-10 text-4xl font-semibold text-gray-900 font-poppins mb-2">
             {content[language].title}
           </h1>
-          <p className="text-gray-600 text-lg">{content[language].subtitle}</p>
+          <p className="text-gray-600 text-lg font-medium">{content[language].subtitle}</p>
           
           {/* Step indicators */}
-          <div className="flex justify-center gap-2 mt-6">
+          <div className="flex justify-center gap-2 mt-8">
             {steps.map((_, index) => (
               <div
                 key={index}
@@ -266,7 +406,7 @@ const DiscoverPage = ({ language, setLanguage }) => {
         </div>
 
         {/* Question Card */}
-        <Card className="border border-gray-200 shadow-sm min-h-[350px] flex flex-col">
+        <Card className="border border-gray-200 shadow-sm min-h-[350px] flex flex-col mt-8">
         <CardContent className="p-8 flex-grow flex flex-col">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-full bg-gov-blue-50 flex items-center justify-center flex-shrink-0">
@@ -368,6 +508,17 @@ const DiscoverPage = ({ language, setLanguage }) => {
                     className="h-11"
                   />
                 </div>
+              )}
+              
+              {/* Error Message */}
+              {errors[currentStepData.id] && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-3 text-sm text-red-600 font-medium"
+                >
+                  {errors[currentStepData.id]}
+                </motion.div>
               )}
             </div>
           </CardContent>
