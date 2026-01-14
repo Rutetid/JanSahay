@@ -26,31 +26,23 @@
   --font-family-sans: 'Poppins', system-ui, -apple-system, sans-serif;
 }
 
-/* Remove default focus outlines and add subtle focus-visible styles */
-*:focus {
-  outline: none;
-}
-
-*:focus-visible {
-  outline: 2px solid rgba(0, 105, 255, 0.5);
-  outline-offset: 2px;
-}
-
+/* Remove all focus outlines completely */
+*:focus,
+*:focus-visible,
 button:focus,
-input:focus,
-select:focus,
-textarea:focus,
-a:focus {
-  outline: none;
-}
-
 button:focus-visible,
+input:focus,
 input:focus-visible,
+select:focus,
 select:focus-visible,
+textarea:focus,
 textarea:focus-visible,
-a:focus-visible {
-  outline: 2px solid rgba(0, 105, 255, 0.5);
-  outline-offset: 2px;
+a:focus,
+a:focus-visible,
+[role="button"]:focus,
+[role="button"]:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .pattern-dots {

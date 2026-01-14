@@ -76,7 +76,7 @@ const Navbar = ({ language, setLanguage }) => {
           </Link>
 
           <div className="hidden md:flex items-center gap-6">
-            <a 
+            {/* <a 
               href="#features" 
               className="text-gray-600 hover:text-gray-900 transition-colors"
             >
@@ -87,7 +87,7 @@ const Navbar = ({ language, setLanguage }) => {
               className="text-gray-600 hover:text-gray-900 transition-colors"
             >
               {content[language].howItWorks}
-            </a>
+            </a> */}
             <button
               onClick={toggleLanguage}
               className="flex items-center gap-2 px-3 py-1.5 rounded-md hover:bg-gray-100 transition-colors"

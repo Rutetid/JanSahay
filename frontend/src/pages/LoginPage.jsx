@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/contexts/AuthContext'
+import { Card } from '../components/ui/card'
 
 const LoginPage = ({ language = 'en' }) => {
   const navigate = useNavigate()
@@ -150,7 +151,7 @@ const LoginPage = ({ language = 'en' }) => {
   return (
     <div className="min-h-screen flex">
       {/* Left Side - Hero Section */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-gov-blue-600 via-gov-blue-700 to-gov-blue-900 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 bg-gov-blue-700 relative overflow-hidden">
         {/* Animated background patterns */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse" />
@@ -208,7 +209,7 @@ const LoginPage = ({ language = 'en' }) => {
 
       {/* Right Side - Form Section */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50 pattern-dots">
-        <div className="w-full max-w-md">
+        <Card className="w-full max-w-md shadow-md border border-black/80 ">
           {/* Mobile Header */}
           <div className="lg:hidden mb-8 text-center">
             <Link to="/" className="inline-flex items-center gap-2 text-gov-blue-600 hover:text-gov-blue-700 mb-6">
@@ -373,7 +374,7 @@ const LoginPage = ({ language = 'en' }) => {
                       </div>
                     </div>
 
-                    <div className="space-y-2">
+                    {/* <div className="space-y-2">
                       <Label htmlFor="confirm-password">{content[language].confirmPassword}</Label>
                       <div className="relative">
                         <Lock className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
@@ -387,7 +388,7 @@ const LoginPage = ({ language = 'en' }) => {
                           required
                         />
                       </div>
-                    </div>
+                    </div> */}
 
                     {error && (
                       <motion.div
@@ -467,7 +468,7 @@ const LoginPage = ({ language = 'en' }) => {
               </Link>
             </div>
           </div>
-        </div>
+        </Card>
       </div>
     </div>
   )

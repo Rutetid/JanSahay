@@ -406,7 +406,7 @@ const DiscoverPage = ({ language, setLanguage }) => {
         </div>
 
         {/* Question Card */}
-        <Card className="border border-gray-200 shadow-sm min-h-[350px] flex flex-col mt-8">
+        <Card className="shadow-sm min-h-[350px] flex flex-col mt-8 shadow-md">
         <CardContent className="p-8 flex-grow flex flex-col">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-full bg-gov-blue-50 flex items-center justify-center flex-shrink-0">

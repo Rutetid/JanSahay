@@ -279,7 +279,7 @@ const SchemeDetailsPage = ({ language, setLanguage }) => {
   }
 
   return (
-    <div className="min-h-screen pattern-dotted">
+    <div className="min-h-screen pattern-dots">
       <Navbar language={language} setLanguage={setLanguage} />
       
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -293,7 +293,7 @@ const SchemeDetailsPage = ({ language, setLanguage }) => {
         </button>
 
         {/* Header */}
-        <div className="bg-white rounded-2xl shadow-sm p-8 mb-6">
+        <Card className="p-8 mb-6">
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
             <div className="flex-1">
               <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-sm font-medium rounded-full mb-3">
@@ -342,7 +342,7 @@ const SchemeDetailsPage = ({ language, setLanguage }) => {
               </Button>
             </div>
           </div>
-        </div>
+        </Card>
 
         {/* Overview */}
         <Card className="mb-6">
