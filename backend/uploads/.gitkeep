@@ -1,0 +1,2 @@
+// Empty file to preserve uploads directory structure
+// Uploaded files will be stored in Supabase Storage, not locally
