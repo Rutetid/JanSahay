@@ -4,16 +4,28 @@ from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
+import os
 
-embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2"
-)
+# Load embeddings lazily to reduce startup memory
+embeddings = None
+db = None
 
-db = FAISS.load_local(
-    "RAG/chatbot/jansahay_vector_db",
-    embeddings,
-    allow_dangerous_deserialization=True
-)
+def get_db():
+    global embeddings, db
+    if db is None:
+        embeddings = HuggingFaceEmbeddings(
+            model_name="sentence-transformers/all-MiniLM-L6-v2",
+            model_kwargs={'device': 'cpu'},
+            encode_kwargs={'normalize_embeddings': True, 'batch_size': 32}
+        )
+        
+        db_path = "chatbot/jansahay_vector_db" if os.path.exists("chatbot") else "RAG/chatbot/jansahay_vector_db"
+        db = FAISS.load_local(
+            db_path,
+            embeddings,
+            allow_dangerous_deserialization=True
+        )
+    return db
 
 app = FastAPI(title="JanSahay RAG API")
 
@@ -35,9 +47,19 @@ class UserProfile(BaseModel):
     caste: Optional[str] = None
     residency: Optional[str] = None
 
+@app.get("/")
+def root():
+    return {"status": "ok", "message": "JanSahay RAG API is running"}
+
+@app.get("/health")
+def health():
+    return {"status": "healthy"}
+
 @app.post("/find-schemes")
 def find_schemes(user: UserProfile):
     try:
+        database = get_db()  # Lazy load
+        
         query_parts = []
 
         if user.age is not None:
@@ -61,9 +83,9 @@ def find_schemes(user: UserProfile):
         question = "Find government schemes for " + " ".join(query_parts)
 
         try:
-            results = db.similarity_search_with_score(question, k=10)
+            results = database.similarity_search_with_score(question, k=10)
         except Exception:
-            results = [(doc, 0.5) for doc in db.similarity_search(question, k=10)]
+            results = [(doc, 0.5) for doc in database.similarity_search(question, k=10)]
 
         response = []
         SIMILARITY_THRESHOLD = 1.0
