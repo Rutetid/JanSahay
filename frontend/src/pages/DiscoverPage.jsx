@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { ArrowRight, ArrowLeft, Sparkles, User, Calendar, MapPin, Home, Briefcase, DollarSign, Users } from 'lucide-react'
-import { motion } from 'motion/react'
+import { ArrowRight, ArrowLeft, Sparkles, User, Calendar, MapPin, Home, Briefcase, DollarSign, Users, Loader2, CheckCircle2, Info, ExternalLink } from 'lucide-react'
+import { motion, AnimatePresence } from 'motion/react'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -9,6 +9,8 @@ import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import Navbar from '@/components/Navbar'
+import { schemeAPI } from '@/lib/api'
+import { Link } from 'react-router-dom'
 
 const formSchema = z.object({
   gender: z.enum(['male', 'female', 'other'], {
@@ -48,6 +50,10 @@ const DiscoverPage = ({ language, setLanguage }) => {
     occupation: ''
   })
   const [errors, setErrors] = useState({})
+  const [loading, setLoading] = useState(false)
+  const [schemes, setSchemes] = useState([])
+  const [showResults, setShowResults] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
 
   const content = {
     en: {
@@ -329,11 +335,153 @@ const DiscoverPage = ({ language, setLanguage }) => {
     }
   }
 
-  const handleSubmit = () => {
+  const parseSchemeText = (schemeText) => {
+    const lines = schemeText.split('\n').filter(line => line.trim())
+    const scheme = {}
+    
+    lines.forEach(line => {
+      if (line.includes('Scheme_ID:')) {
+        scheme.id = line.split('Scheme_ID:')[1].trim()
+      } else if (line.includes('Scheme_Name:')) {
+        scheme.name = line.split('Scheme_Name:')[1].trim()
+      } else if (line.includes('Category:')) {
+        scheme.category = line.split('Category:')[1].trim()
+      } else if (line.includes('Eligibility:')) {
+        const eligibilityRaw = line.split('Eligibility:')[1].trim()
+        // Parse Python dict format to readable text
+        try {
+          // Replace Python-style dict with JSON
+          const jsonStr = eligibilityRaw
+            .replace(/'/g, '"')
+            .replace(/True/g, 'true')
+            .replace(/False/g, 'false')
+          const eligibilityObj = JSON.parse(jsonStr)
+          
+          // Convert to readable format
+          const parts = []
+          if (eligibilityObj.min_age) parts.push(`Age ${eligibilityObj.min_age}+`)
+          if (eligibilityObj.max_age) parts.push(`up to ${eligibilityObj.max_age} years`)
+          if (eligibilityObj.gender && eligibilityObj.gender !== 'Any') parts.push(eligibilityObj.gender)
+          if (eligibilityObj.occupation) parts.push(eligibilityObj.occupation)
+          if (eligibilityObj.max_income) parts.push(`Income under ₹${(eligibilityObj.max_income / 100000).toFixed(1)}L`)
+          if (eligibilityObj.category_allowed) {
+            parts.push(`Categories: ${eligibilityObj.category_allowed.join(', ')}`)
+          }
+          if (eligibilityObj.land_required) parts.push('Land ownership required')
+          
+          scheme.eligibility = parts.join(' • ')
+        } catch (e) {
+          // If parsing fails, use raw text
+          scheme.eligibility = eligibilityRaw
+        }
+      } else if (line.includes('Benefits:')) {
+        scheme.benefits = line.split('Benefits:')[1].trim()
+      } else if (line.includes('Documents:')) {
+        const docsRaw = line.split('Documents:')[1].trim()
+        // Parse array format
+        try {
+          const jsonStr = docsRaw.replace(/'/g, '"')
+          const docsArray = JSON.parse(jsonStr)
+          scheme.documents = docsArray.join(', ')
+        } catch (e) {
+          scheme.documents = docsRaw
+        }
+      } else if (line.includes('State:')) {
+        scheme.state = line.split('State:')[1].trim()
+      } else if (line.includes('Description:')) {
+        scheme.description = line.split('Description:')[1].trim()
+      }
+    })
+    
+    return scheme
+  }
+
+  const handleSubmit = async () => {
     try {
       const validatedData = formSchema.parse(formData)
       console.log('Validated Form Data:', validatedData)
-      // TODO: Navigate to results page or trigger scheme search
+      
+      setLoading(true)
+      setShowResults(false)
+      
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      
+      // Mock data selection based on occupation
+      const mockData = {
+        student: {
+          "query": "Find government schemes for 21 year old student obc male in bihar with income under 100000",
+          "total_schemes": 5,
+          "results": [
+            {
+              "index": 1,
+              "scheme_text": "\n    Scheme_ID: DDUGKY15\n    Scheme_Name: Deen Dayal Upadhyaya Grameen Kaushalya Yojana (DDU-GKY)\n    Category: Skill Development\n    Eligibility: {'min_age': 15, 'max_age': 35, 'category_allowed': ['SC', 'ST', 'OBC', 'BPL']}\n    Benefits: Skill training and placement for rural youth\n    Documents: ['Aadhaar Card', 'Rural Residence Proof']\n    State: All\n    Description: This scheme provides skill training and job placement for rural youth.\n    ",
+              "relevance_score": 0.8173279166221619
+            },
+            {
+              "index": 2,
+              "scheme_text": "\n    Scheme_ID: MGNREGA06\n    Scheme_Name: Mahatma Gandhi National Rural Employment Guarantee Act (MGNREGA)\n    Category: Employment\n    Eligibility: {'min_age': 18, 'gender': 'Any'}\n    Benefits: Guaranteed 100 days of wage employment in rural areas\n    Documents: ['Aadhaar Card', 'Job Card', 'Bank Account Details']\n    State: All\n    Description: This scheme provides guaranteed employment to rural households for livelihood support.\n    ",
+              "relevance_score": 0.8407395482063293
+            },
+            {
+              "index": 3,
+              "scheme_text": "\n    Scheme_ID: PMKISAN03\n    Scheme_Name: Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)\n    Category: Agriculture\n    Eligibility: {'min_age': 18, 'occupation': 'Farmer', 'land_required': True}\n    Benefits: ₹6000 per year financial support to farmers\n    Documents: ['Aadhaar Card', 'Land Ownership Documents', 'Bank Account Details']\n    State: All\n    Description: The government gives farmers ₹6000 every year to help with farming expenses.\n    ",
+              "relevance_score": 0.9491934776306152
+            },
+            {
+              "index": 4,
+              "scheme_text": "\n    Scheme_ID: PMAY01\n    Scheme_Name: Pradhan Mantri Awas Yojana (PMAY)\n    Category: Housing\n    Eligibility: {'min_age': 18, 'max_income': 300000, 'gender': 'Any', 'category_allowed': ['SC', 'ST', 'OBC', 'General']}\n    Benefits: Financial assistance for building or buying a pucca house\n    Documents: ['Aadhaar Card', 'Income Certificate', 'Bank Account Details']\n    State: All\n    Description: The government helps eligible citizens to build or buy a house by giving financial support.\n    ",
+              "relevance_score": 0.9518991112709045
+            },
+            {
+              "index": 5,
+              "scheme_text": "\n    Scheme_ID: PMKVY12\n    Scheme_Name: Pradhan Mantri Kaushal Vikas Yojana (PMKVY)\n    Category: Skill Development\n    Eligibility: {'min_age': 15, 'max_age': 45}\n    Benefits: Free skill training and certification\n    Documents: ['Aadhaar Card', 'Education Certificate']\n    State: All\n    Description: This scheme helps youth learn new skills and improve job opportunities.\n    ",
+              "relevance_score": 0.9574979543685913
+            }
+          ]
+        },
+        agriculture: {
+          "query": "Find government schemes for 35 year old agriculture sc male in bihar with income under 150000",
+          "total_schemes": 4,
+          "results": [
+            {
+              "index": 1,
+              "scheme_text": "\n    Scheme_ID: PMKISAN03\n    Scheme_Name: Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)\n    Category: Agriculture\n    Eligibility: {'min_age': 18, 'occupation': 'Farmer', 'land_required': True}\n    Benefits: ₹6000 per year financial support to farmers\n    Documents: ['Aadhaar Card', 'Land Ownership Documents', 'Bank Account Details']\n    State: All\n    Description: The government gives farmers ₹6000 every year to help with farming expenses.\n    ",
+              "relevance_score": 0.8087407350540161
+            },
+            {
+              "index": 2,
+              "scheme_text": "\n    Scheme_ID: MGNREGA06\n    Scheme_Name: Mahatma Gandhi National Rural Employment Guarantee Act (MGNREGA)\n    Category: Employment\n    Eligibility: {'min_age': 18, 'gender': 'Any'}\n    Benefits: Guaranteed 100 days of wage employment in rural areas\n    Documents: ['Aadhaar Card', 'Job Card', 'Bank Account Details']\n    State: All\n    Description: This scheme provides guaranteed employment to rural households for livelihood support.\n    ",
+              "relevance_score": 0.8354548811912537
+            },
+            {
+              "index": 3,
+              "scheme_text": "\n    Scheme_ID: DDUGKY15\n    Scheme_Name: Deen Dayal Upadhyaya Grameen Kaushalya Yojana (DDU-GKY)\n    Category: Skill Development\n    Eligibility: {'min_age': 15, 'max_age': 35, 'category_allowed': ['SC', 'ST', 'OBC', 'BPL']}\n    Benefits: Skill training and placement for rural youth\n    Documents: ['Aadhaar Card', 'Rural Residence Proof']\n    State: All\n    Description: This scheme provides skill training and job placement for rural youth.\n    ",
+              "relevance_score": 0.8598265647888184
+            },
+            {
+              "index": 4,
+              "scheme_text": "\n    Scheme_ID: PMAY01\n    Scheme_Name: Pradhan Mantri Awas Yojana (PMAY)\n    Category: Housing\n    Eligibility: {'min_age': 18, 'max_income': 300000, 'gender': 'Any', 'category_allowed': ['SC', 'ST', 'OBC', 'General']}\n    Benefits: Financial assistance for building or buying a pucca house\n    Documents: ['Aadhaar Card', 'Income Certificate', 'Bank Account Details']\n    State: All\n    Description: The government helps eligible citizens to build or buy a house by giving financial support.\n    ",
+              "relevance_score": 0.9989012479782104
+            }
+          ]
+        }
+      }
+      
+      // Select mock data based on occupation, default to student
+      const response = mockData[validatedData.occupation] || mockData.student
+      
+      // Parse schemes from RAG response
+      const parsedSchemes = response.results.map(result => ({
+        ...parseSchemeText(result.scheme_text),
+        relevanceScore: result.relevance_score
+      }))
+      
+      setSchemes(parsedSchemes)
+      setSearchQuery(response.query)
+      setShowResults(true)
+      setLoading(false)
+      
     } catch (error) {
       if (error instanceof z.ZodError) {
         const newErrors = {}
@@ -344,8 +492,201 @@ const DiscoverPage = ({ language, setLanguage }) => {
         })
         setErrors(newErrors)
         console.error('Validation errors:', newErrors)
+      } else {
+        console.error('API Error:', error)
+        setErrors({ submit: 'Failed to fetch schemes. Please try again.' })
       }
+      setLoading(false)
     }
+  }
+
+  const handleStartOver = () => {
+    setShowResults(false)
+    setSchemes([])
+    setCurrentStep(0)
+    setFormData({
+      gender: '',
+      age: '',
+      state: '',
+      residence: '',
+      category: '',
+      income: '',
+      occupation: ''
+    })
+  }
+
+  // Loading screen
+  if (loading) {
+    return (
+      <div className="min-h-screen pattern-dots">
+        <Navbar language={language} setLanguage={setLanguage} />
+        <div className="flex flex-col items-center justify-center min-h-[80vh]">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="relative"
+          >
+            <div className="w-24 h-24 border-4 border-gov-blue-200 border-t-gov-blue-600 rounded-full animate-spin" />
+            <Sparkles className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 text-gov-blue-600" />
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mt-8 text-2xl font-semibold text-gray-900"
+          >
+            {language === 'en' ? 'Discovering Schemes...' : 'योजनाएं खोजी जा रही हैं...'}
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mt-2 text-gray-600"
+          >
+            {language === 'en' ? 'Finding the best matches for you' : 'आपके लिए सर्वोत्तम मिलान खोज रहे हैं'}
+          </motion.p>
+        </div>
+      </div>
+    )
+  }
+
+  // Results screen
+  if (showResults) {
+    return (
+      <div className="min-h-screen pattern-dots">
+        <Navbar language={language} setLanguage={setLanguage} />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Results Header */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-8"
+          >
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+              <CheckCircle2 className="w-8 h-8 text-green-600" />
+            </div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+              {language === 'en' ? `Found ${schemes.length} Schemes For You!` : `आपके लिए ${schemes.length} योजनाएं मिलीं!`}
+            </h1>
+            {/* <p className="text-gray-600 max-w-2xl mx-auto">
+              {searchQuery}
+            </p> */}
+          </motion.div>
+
+          {/* Schemes Grid */}
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
+            <AnimatePresence>
+              {schemes.map((scheme, index) => (
+                <motion.div
+                  key={scheme.id || index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="h-full"
+                >
+                  <Card className="h-[500px] flex flex-col hover:shadow-lg transition-shadow border-l-4 border-l-gov-blue-500">
+                    <CardContent className="p-6 flex flex-col h-full">
+                      {/* Relevance Badge */}
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gov-blue-100 text-gov-blue-800">
+                          {scheme.category || 'General'}
+                        </span>
+                        {/* <div className="flex items-center gap-1 text-sm text-gray-500">
+                          <Sparkles className="w-4 h-4" />
+                          <span>{((1 - scheme.relevanceScore) * 100).toFixed(0)}% Match</span>
+                        </div> */}
+                      </div>
+
+                      {/* Scheme Name */}
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+                        {scheme.name || 'Government Scheme'}
+                      </h3>
+
+                      {/* State */}
+                      {scheme.state && (
+                        <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                          <MapPin className="w-4 h-4" />
+                          <span>{scheme.state}</span>
+                        </div>
+                      )}
+
+                      {/* Description */}
+                      <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                        {scheme.description || 'No description available'}
+                      </p>
+
+                      {/* Eligibility */}
+                      {scheme.eligibility && (
+                        <div className="mb-4">
+                          <div className="flex items-start gap-2 text-sm">
+                            <User className="w-4 h-4 text-purple-600 mt-0.5 shrink-0" />
+                            <div>
+                              <p className="text-xs font-medium text-gray-700 mb-1">Eligibility:</p>
+                              <p className="text-gray-600 text-xs line-clamp-2">{scheme.eligibility}</p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Benefits */}
+                      {scheme.benefits && (
+                        <div className="mb-4">
+                          <div className="flex items-start gap-2 text-sm">
+                            <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
+                            <p className="text-gray-700 line-clamp-2">{scheme.benefits}</p>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Documents Required */}
+                      {scheme.documents && (
+                        <div className="mb-4">
+                          <div className="flex items-start gap-2 text-sm">
+                            <Info className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />
+                            <p className="text-gray-600 text-xs line-clamp-2">
+                              <span className="font-medium">Docs:</span> {scheme.documents}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Spacer to push button to bottom */}
+                      <div className="grow"></div>
+
+                      {/* View Details Button */}
+                      <Link 
+                        to={`/scheme/${scheme.id}`} 
+                        state={{ scheme }} 
+                        className="mt-auto"
+                      >
+                        <Button variant="outline" size="sm" className="w-full gap-2">
+                          View Details
+                          <ExternalLink className="w-4 h-4" />
+                        </Button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+
+          {/* Actions */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="text-center"
+          >
+            <Button onClick={handleStartOver} size="lg" className="gap-2">
+              <ArrowLeft className="w-5 h-5" />
+              {language === 'en' ? 'Search Again' : 'फिर से खोजें'}
+            </Button>
+          </motion.div>
+        </div>
+      </div>
+    )
   }
 
   const isStepValid = () => {

@@ -1,4 +1,4 @@
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import { Link, useParams, useNavigate, useLocation } from 'react-router-dom'
 import { 
   ArrowLeft, 
   Calendar, 
@@ -12,9 +12,12 @@ import {
   Info,
   Target,
   ClipboardList,
-  Building2
+  Building2,
+  MapPin,
+  User,
+  Sparkles
 } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import Navbar from '@/components/Navbar'
@@ -22,9 +25,173 @@ import Navbar from '@/components/Navbar'
 const SchemeDetailsPage = ({ language, setLanguage }) => {
   const { schemeId } = useParams()
   const navigate = useNavigate()
-  const [isSaved, setIsSaved] = useState(true)
+  const location = useLocation()
+  const [isSaved, setIsSaved] = useState(false)
+  
+  // Get scheme data from location state or use mock data as fallback
+  const schemeFromState = location.state?.scheme
+  
+  useEffect(() => {
+    // If no scheme data was passed, redirect back
+    if (!schemeFromState && !schemes[schemeId]) {
+      navigate('/discover')
+    }
+  }, [schemeFromState, schemeId, navigate])
 
-  // Mock scheme data - in real app, fetch based on schemeId
+  // If we have scheme data from DiscoverPage, use it
+  if (schemeFromState) {
+    const content = {
+      en: {
+        back: 'Back to Results',
+        saveScheme: 'Save Scheme',
+        saved: 'Saved',
+        overview: 'Overview',
+        eligibility: 'Eligibility Criteria',
+        benefits: 'Benefits',
+        documents: 'Required Documents',
+        category: 'Category',
+        state: 'State',
+        relevance: 'Relevance Score',
+        description: 'Description'
+      },
+      hi: {
+        back: 'परिणामों पर वापस जाएं',
+        saveScheme: 'योजना सहेजें',
+        saved: 'सहेजा गया',
+        overview: 'अवलोकन',
+        eligibility: 'पात्रता मानदंड',
+        benefits: 'लाभ',
+        documents: 'आवश्यक दस्तावेज़',
+        category: 'श्रेणी',
+        state: 'राज्य',
+        relevance: 'प्रासंगिकता स्कोर',
+        description: 'विवरण'
+      }
+    }
+
+    const handleSaveScheme = () => {
+      setIsSaved(!isSaved)
+      // TODO: Call API to save/unsave scheme
+    }
+
+    return (
+      <div className="min-h-screen pattern-dots">
+        <Navbar language={language} setLanguage={setLanguage} />
+        
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Back Button */}
+          <Button
+            variant="ghost"
+            onClick={() => navigate(-1)}
+            className="mb-6 gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            {content[language].back}
+          </Button>
+
+          {/* Header */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gov-blue-100 text-gov-blue-800">
+                    {schemeFromState.category || 'General'}
+                  </span>
+                  {schemeFromState.relevanceScore && (
+                    <div className="flex items-center gap-1 text-sm text-gray-600">
+                      <Sparkles className="w-4 h-4" />
+                      <span>{((1 - schemeFromState.relevanceScore) * 100).toFixed(0)}% Match</span>
+                    </div>
+                  )}
+                </div>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                  {schemeFromState.name}
+                </h1>
+                {schemeFromState.state && (
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <MapPin className="w-4 h-4" />
+                    <span>{schemeFromState.state}</span>
+                  </div>
+                )}
+              </div>
+              <Button
+                onClick={handleSaveScheme}
+                variant={isSaved ? 'default' : 'outline'}
+                className="gap-2"
+              >
+                {isSaved ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+                {isSaved ? content[language].saved : content[language].saveScheme}
+              </Button>
+            </div>
+          </div>
+
+          <div className="grid gap-6">
+            {/* Description */}
+            {schemeFromState.description && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Info className="w-5 h-5 text-gov-blue-600" />
+                    {content[language].description}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700 leading-relaxed">{schemeFromState.description}</p>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Eligibility */}
+            {schemeFromState.eligibility && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <User className="w-5 h-5 text-purple-600" />
+                    {content[language].eligibility}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700 leading-relaxed">{schemeFromState.eligibility}</p>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Benefits */}
+            {schemeFromState.benefits && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <CheckCircle2 className="w-5 h-5 text-green-600" />
+                    {content[language].benefits}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700 leading-relaxed">{schemeFromState.benefits}</p>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Required Documents */}
+            {schemeFromState.documents && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-blue-600" />
+                    {content[language].documents}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-700 leading-relaxed">{schemeFromState.documents}</p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Mock scheme data - fallback for direct navigation
   const schemes = {
     '1': {
       name: 'Pradhan Mantri Awas Yojana',
