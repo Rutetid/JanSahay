@@ -1,4 +1,5 @@
 import { Bot, Shield, Users, Sparkles, CheckCircle, FileText } from 'lucide-react'
+import { motion } from 'motion/react'
 import { Card, CardHeader, CardTitle, CardDescription } from './ui/card'
 
 const KeyFeatures = ({ language }) => {
@@ -80,28 +81,49 @@ const KeyFeatures = ({ language }) => {
   const { title, subtitle, features } = content[language]
 
   return (
-<section id="features" className=" py-12 sm:py-16 lg:py-20">
+    <section id="features" className="py-12 sm:py-16 lg:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">{title}</h2>
           <p className="text-base sm:text-xl text-gray-600">{subtitle}</p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
+        <motion.div 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.1
+              }
+            }
+          }}
+        >
           {features.map((feature, index) => {
             const Icon = feature.icon
             return (
-              <Card key={index}>
-                <CardHeader>
-                  <Icon className="w-10 h-10 text-gov-blue-600 mb-2" />
-                  <CardTitle>{feature.title}</CardTitle>
-                  <CardDescription>
-                    {feature.description}
-                  </CardDescription>
-                </CardHeader>
-              </Card>
+              <motion.div
+                key={index}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
+                }}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              >
+                <Card className="h-full">
+                  <CardHeader>
+                    <Icon className="w-10 h-10 text-gov-blue-600 mb-2" />
+                    <CardTitle>{feature.title}</CardTitle>
+                    <CardDescription>
+                      {feature.description}
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              </motion.div>
             )
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

@@ -1,4 +1,5 @@
 import { FileText, Bot, Sparkles } from 'lucide-react'
+import { motion } from 'motion/react'
 import { Card, CardHeader, CardTitle, CardDescription } from './ui/card'
 
 const HowItWorks = ({ language }) => {
@@ -73,24 +74,45 @@ const HowItWorks = ({ language }) => {
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">{title}</h2>
         <p className="text-base sm:text-xl text-gray-600">{subtitle}</p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
+      <motion.div 
+        className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 lg:gap-8"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={{
+          visible: {
+            transition: {
+              staggerChildren: 0.15
+            }
+          }
+        }}
+      >
         {steps.map((step, index) => {
           const Icon = step.icon
           return (
-            <Card key={index} className={`border-2 ${colorClasses[step.color]} transition-colors`}>
-              <CardHeader>
-                <div className={`w-12 h-12 ${colorClasses[step.color]} rounded-full flex items-center justify-center mb-4`}>
-                  <Icon className={`w-6 h-6 ${iconColorClasses[step.color]}`} />
-                </div>
-                <CardTitle>{step.title}</CardTitle>
-                <CardDescription className="text-base">
-                  {step.description}
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            <motion.div
+              key={index}
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+              }}
+              whileHover={{ y: -6, transition: { duration: 0.2 } }}
+            >
+              <Card className={`border-2 h-full ${colorClasses[step.color]} transition-colors`}>
+                <CardHeader>
+                  <div className={`w-12 h-12 ${colorClasses[step.color]} rounded-full flex items-center justify-center mb-4`}>
+                    <Icon className={`w-6 h-6 ${iconColorClasses[step.color]}`} />
+                  </div>
+                  <CardTitle>{step.title}</CardTitle>
+                  <CardDescription className="text-base">
+                    {step.description}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </motion.div>
           )
         })}
-      </div>
+      </motion.div>
     </section>
   )
 }

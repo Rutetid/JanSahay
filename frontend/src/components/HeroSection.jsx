@@ -1,5 +1,6 @@
 import { ArrowRight, CheckCircle, Bot } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { motion } from 'motion/react'
 import { Button } from './ui/button'
 import { Card, CardContent } from './ui/card'
 
@@ -36,23 +37,43 @@ const HeroSection = ({ language }) => {
   };
 
   return (
-    <div className=" pt-12 sm:pt-12">
+    <div className="pt-12 sm:pt-12">
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-12 pb-8 sm:pb-16 text-center">
         <div className="max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 bg-blue-100 text-gov-blue-700 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full mb-4 sm:mb-6">
+          <motion.div 
+            className="inline-flex items-center gap-2 bg-blue-100 text-gov-blue-700 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full mb-4 sm:mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
             <Bot className="w-3 sm:w-4 h-3 sm:h-4" />
             <span className="text-xs sm:text-sm font-medium">{content[language].badge}</span>
-          </div>
+          </motion.div>
           
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent leading-tight">
+          <motion.h1 
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent leading-tight"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+          >
             {content[language].heading}
-          </h1>
+          </motion.h1>
           
-          <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 leading-relaxed">
+          <motion.p 
+            className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+          >
             {content[language].subheading}
-          </p>
+          </motion.p>
           
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+          >
             <Link to="/discover">
               <Button size="lg" className="text-base sm:text-lg px-6 sm:px-8 w-full sm:w-auto">
                 {content[language].cta}
@@ -62,9 +83,14 @@ const HeroSection = ({ language }) => {
             <Button size="lg" variant="outline" className="text-base sm:text-lg px-6 sm:px-8 w-full sm:w-auto">
               {content[language].ctaSecondary}
             </Button>
-          </div>
+          </motion.div>
 
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-sm text-gray-600">
+          <motion.div 
+            className="mt-12 flex flex-wrap items-center justify-center gap-8 text-sm text-gray-600"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
+          >
             <div className="flex items-center gap-2">
               <CheckCircle className="w-5 h-5 text-gov-blue-600" />
               <span>{content[language].free}</span>
@@ -77,11 +103,16 @@ const HeroSection = ({ language }) => {
               <CheckCircle className="w-5 h-5 text-gov-blue-600" />
               <span>{content[language].secure}</span>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+      <motion.section 
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
+      >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <Card className="border-none shadow-lg">
             <CardContent className="pt-6 text-center">
@@ -102,7 +133,7 @@ const HeroSection = ({ language }) => {
             </CardContent>
           </Card>
         </div>
-      </section>
+      </motion.section>
     </div>
   )
 }

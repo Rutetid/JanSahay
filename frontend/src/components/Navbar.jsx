@@ -164,7 +164,7 @@ const Navbar = ({ language, setLanguage }) => {
 
       {/* Mobile Menu - overlay */}
       {isOpen && (
-        <div className="md:hidden fixed inset-0 top-16 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-40 overflow-y-auto">
+        <div className="md:hidden fixed inset-0 top-16 bg-white border-t border-gray-200 shadow-lg z-40 overflow-y-auto">
           <div className="px-4 py-4 space-y-2">
             {user && (
               <div className="flex items-center gap-3 px-4 py-3 mb-2 bg-gray-50 rounded-lg">
