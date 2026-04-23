@@ -60,19 +60,19 @@ const Navbar = ({ language, setLanguage }) => {
 
   return (
     <nav className="bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm border-b border-gray-200">
-      <div className=" mx-auto px-20 sm:px-6 lg:px-8">
+      <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link to="/">
-          <button 
-            onClick={scrollToTop}
-            className="flex items-center gap-2 group cursor-pointer"
-          >
-            
-            <Sparkles className="w-8 h-8 text-blue-900" />
-            <span className="text-2xl font-bold text-blue-900">
-              {content[language].title}
-            </span>
-          </button>
+<Link to="/">
+            <button 
+              onClick={scrollToTop}
+              className="flex items-center gap-1.5 sm:gap-2 group cursor-pointer"
+            >
+              
+              <Sparkles className="w-6 sm:w-8 h-6 sm:h-8 text-blue-900" />
+              <span className="text-lg sm:text-2xl font-bold text-blue-900">
+                {content[language].title}
+              </span>
+            </button>
           </Link>
 
           <div className="hidden md:flex items-center gap-6">
@@ -151,16 +151,10 @@ const Navbar = ({ language, setLanguage }) => {
             )}
           </div>
 
-          <div className="md:hidden flex items-center gap-3">
-            <button
-              onClick={toggleLanguage}
-              className="p-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 transition-all border border-gray-200"
-            >
-              <Globe size={20} className="text-gray-900" />
-            </button>
+<div className="md:hidden flex items-center gap-3">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-all"
+              className="p-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-all z-50 relative"
             >
               {isOpen ? <X size={26} /> : <Menu size={26} />}
             </button>
@@ -168,8 +162,9 @@ const Navbar = ({ language, setLanguage }) => {
         </div>
       </div>
 
+      {/* Mobile Menu - overlay */}
       {isOpen && (
-        <div className="md:hidden bg-white border-t border-gray-200 shadow-lg">
+        <div className="md:hidden fixed inset-0 top-16 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-40 overflow-y-auto">
           <div className="px-4 py-4 space-y-2">
             {user && (
               <div className="flex items-center gap-3 px-4 py-3 mb-2 bg-gray-50 rounded-lg">
@@ -182,27 +177,6 @@ const Navbar = ({ language, setLanguage }) => {
                 </div>
               </div>
             )}
-
-            <button 
-              onClick={scrollToTop}
-              className="block w-full text-left text-gray-700 hover:text-gov-blue-600 hover:bg-gray-50 py-3 px-4 rounded-lg font-medium transition-all"
-            >
-              {content[language].home}
-            </button>
-            <a 
-              href="#features" 
-              onClick={() => setIsOpen(false)}
-              className="block text-gray-700 hover:text-gov-blue-600 hover:bg-gray-50 py-3 px-4 rounded-lg font-medium transition-all"
-            >
-              {content[language].features}
-            </a>
-            <a 
-              href="#how-it-works" 
-              onClick={() => setIsOpen(false)}
-              className="block text-gray-700 hover:text-gov-blue-600 hover:bg-gray-50 py-3 px-4 rounded-lg font-medium transition-all"
-            >
-              {content[language].howItWorks}
-            </a>
 
             {user ? (
               <>

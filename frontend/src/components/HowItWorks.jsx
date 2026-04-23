@@ -68,12 +68,12 @@ const HowItWorks = ({ language }) => {
   }
 
   return (
-    <section id="how-it-works" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-      <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold mb-4">{title}</h2>
-        <p className="text-xl text-gray-600">{subtitle}</p>
+    <section id="how-it-works" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+      <div className="text-center mb-8 sm:mb-12">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">{title}</h2>
+        <p className="text-base sm:text-xl text-gray-600">{subtitle}</p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 lg:gap-8">
         {steps.map((step, index) => {
           const Icon = step.icon
           return (

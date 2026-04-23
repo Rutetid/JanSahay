@@ -575,7 +575,7 @@ const DiscoverPage = ({ language, setLanguage }) => {
           </motion.div>
 
           {/* Schemes Grid */}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
+          <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 mb-6 sm:mb-8">
             <AnimatePresence>
               {schemes.map((scheme, index) => (
                 <motion.div
@@ -585,8 +585,8 @@ const DiscoverPage = ({ language, setLanguage }) => {
                   transition={{ delay: index * 0.1 }}
                   className="h-full"
                 >
-                  <Card className="h-[500px] flex flex-col hover:shadow-lg transition-shadow border-l-4 border-l-gov-blue-500">
-                    <CardContent className="p-6 flex flex-col h-full">
+                  <Card className="h-auto sm:h-[500px] flex flex-col hover:shadow-lg transition-shadow border-l-4 border-l-gov-blue-500">
+                    <CardContent className="p-4 sm:p-6 flex flex-col h-full">
                       {/* Relevance Badge */}
                       <div className="flex items-center justify-between mb-4">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gov-blue-100 text-gov-blue-800">
@@ -599,20 +599,20 @@ const DiscoverPage = ({ language, setLanguage }) => {
                       </div>
 
                       {/* Scheme Name */}
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
                         {scheme.name || 'Government Scheme'}
                       </h3>
 
                       {/* State */}
                       {scheme.state && (
-                        <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
-                          <MapPin className="w-4 h-4" />
+                        <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3">
+                          <MapPin className="w-3 sm:w-4 h-3 sm:h-4" />
                           <span>{scheme.state}</span>
                         </div>
                       )}
 
                       {/* Description */}
-                      <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4 line-clamp-2 sm:line-clamp-3">
                         {scheme.description || 'No description available'}
                       </p>
 
@@ -723,11 +723,11 @@ const DiscoverPage = ({ language, setLanguage }) => {
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="text-center mb-6">
-          <h1 className="pt-10 text-4xl font-semibold text-gray-900 font-poppins mb-2">
+        <div className="text-center mb-4 sm:mb-6">
+          <h1 className="pt-8 sm:pt-10 text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-900 font-poppins mb-2">
             {content[language].title}
           </h1>
-          <p className="text-gray-600 text-lg font-medium">{content[language].subtitle}</p>
+          <p className="text-gray-600 text-sm sm:text-lg font-medium px-4">{content[language].subtitle}</p>
           
           {/* Step indicators */}
           <div className="flex justify-center gap-2 mt-8">
@@ -747,13 +747,13 @@ const DiscoverPage = ({ language, setLanguage }) => {
         </div>
 
         {/* Question Card */}
-        <Card className="shadow-sm min-h-[350px] flex flex-col mt-8 shadow-md">
-        <CardContent className="p-8 flex-grow flex flex-col">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-full bg-gov-blue-50 flex items-center justify-center flex-shrink-0">
-                <Icon className="w-5 h-5 text-gov-blue-600" />
+        <Card className="shadow-sm min-h-[350px] flex flex-col mt-6 sm:mt-8 shadow-md">
+        <CardContent className="p-5 sm:p-8 flex-grow flex flex-col">
+            <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+              <div className="w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-gov-blue-50 flex items-center justify-center flex-shrink-0">
+                <Icon className="w-4 sm:w-5 h-4 sm:h-5 text-gov-blue-600" />
               </div>
-              <h2 className="text-xl font-semibold text-gray-900">
+              <h2 className="text-base sm:text-xl font-semibold text-gray-900">
                 {currentStepData.title}
               </h2>
             </div>

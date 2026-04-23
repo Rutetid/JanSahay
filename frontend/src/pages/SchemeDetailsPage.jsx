@@ -78,38 +78,38 @@ const SchemeDetailsPage = ({ language, setLanguage }) => {
       <div className="min-h-screen pattern-dots">
         <Navbar language={language} setLanguage={setLanguage} />
         
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           {/* Back Button */}
           <Button
             variant="ghost"
             onClick={() => navigate(-1)}
-            className="mb-6 gap-2"
+            className="mb-4 sm:mb-6 gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
             {content[language].back}
           </Button>
 
           {/* Header */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-            <div className="flex items-start justify-between mb-4">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
+            <div className="flex items-start justify-between mb-3 sm:mb-4">
               <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gov-blue-100 text-gov-blue-800">
+                <div className="flex items-center gap-2 sm:gap-3 mb-2">
+                  <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-sm font-medium bg-gov-blue-100 text-gov-blue-800">
                     {schemeFromState.category || 'General'}
                   </span>
                   {schemeFromState.relevanceScore && (
-                    <div className="flex items-center gap-1 text-sm text-gray-600">
-                      <Sparkles className="w-4 h-4" />
+                    <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-600">
+                      <Sparkles className="w-3 sm:w-4 h-3 sm:h-4" />
                       <span>{((1 - schemeFromState.relevanceScore) * 100).toFixed(0)}% Match</span>
                     </div>
                   )}
                 </div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">
                   {schemeFromState.name}
                 </h1>
                 {schemeFromState.state && (
-                  <div className="flex items-center gap-2 text-gray-600">
-                    <MapPin className="w-4 h-4" />
+                  <div className="flex items-center gap-1.5 sm:gap-2 text-sm text-gray-600">
+                    <MapPin className="w-3 sm:w-4 h-3 sm:h-4" />
                     <span>{schemeFromState.state}</span>
                   </div>
                 )}
@@ -117,7 +117,7 @@ const SchemeDetailsPage = ({ language, setLanguage }) => {
               <Button
                 onClick={handleSaveScheme}
                 variant={isSaved ? 'default' : 'outline'}
-                className="gap-2"
+                className="gap-2 flex-shrink-0 ml-2"
               >
                 {isSaved ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
                 {isSaved ? content[language].saved : content[language].saveScheme}

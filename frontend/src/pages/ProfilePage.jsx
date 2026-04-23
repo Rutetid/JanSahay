@@ -181,14 +181,14 @@ const ProfilePage = ({ language, setLanguage }) => {
     <div className="min-h-screen pattern-dots">
       <Navbar language={language} setLanguage={setLanguage} />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Header */}
-        <div className="mb-8">
-          <Link to="/" className="inline-flex items-center text-gray-600 hover:text-gov-blue-600 mb-4">
+        <div className="mb-6 sm:mb-8">
+          <Link to="/" className="inline-flex items-center text-gray-600 hover:text-gov-blue-600 mb-3 sm:mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
             {content[language].backToHome}
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
             {content[language].dashboard}
           </h1>
           <p className="text-gray-600">
@@ -196,7 +196,7 @@ const ProfilePage = ({ language, setLanguage }) => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Eligibility Profile Card */}
           <Card className="lg:col-span-1">
             <CardHeader>
@@ -358,7 +358,7 @@ const ProfilePage = ({ language, setLanguage }) => {
                 </Link>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 {savedSchemes.map((scheme) => (
                   <div
                     key={scheme.id}

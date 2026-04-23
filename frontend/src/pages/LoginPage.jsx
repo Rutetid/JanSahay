@@ -143,53 +143,53 @@ const LoginPage = ({ language = 'en' }) => {
       <div className="hidden lg:flex lg:w-1/2 bg-gov-blue-700 relative overflow-hidden">
         {/* Animated background patterns */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-0 left-0 w-64 h-64 lg:w-96 lg:h-96 bg-white rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-0 right-0 w-64 h-64 lg:w-96 lg:h-96 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
         </div>
 
-        <div className="relative z-10 flex flex-col justify-center px-16 text-white">
-          <Link to="/" className="absolute top-8 left-8 flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <Sparkles className="w-8 h-8" />
-            <span className="text-2xl font-bold">JanSahay</span>
+        <div className="relative z-10 flex flex-col justify-center px-8 lg:px-16 text-white">
+          <Link to="/" className="absolute top-6 lg:top-8 left-6 lg:left-8 flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <Sparkles className="w-6 lg:w-8 h-6 lg:h-8" />
+            <span className="text-xl lg:text-2xl font-bold">JanSahay</span>
           </Link>
 
           <div>
-            <h1 className="text-5xl font-bold mb-6 leading-tight">
+            <h1 className="text-3xl lg:text-5xl font-bold mb-4 lg:mb-6 leading-tight">
               {content[language].heroTitle}
             </h1>
-            <p className="text-xl text-blue-100 mb-12">
+            <p className="text-lg lg:text-xl text-blue-100 mb-8 lg:mb-12">
               {content[language].heroSubtitle}
             </p>
           </div>
 
-          <div className="space-y-6">
-            <div className="flex items-start gap-4">
-              <div className="shrink-0 w-12 h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                <Zap className="w-6 h-6 text-yellow-300" />
+          <div className="space-y-4 lg:space-y-6">
+            <div className="flex items-start gap-3 lg:gap-4">
+              <div className="shrink-0 w-10 lg:w-12 h-10 lg:h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                <Zap className="w-5 lg:w-6 h-5 lg:h-6 text-yellow-300" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-1">{content[language].feature1}</h3>
-                <p className="text-blue-100">{content[language].feature1Desc}</p>
+                <h3 className="text-base lg:text-lg font-semibold mb-1">{content[language].feature1}</h3>
+                <p className="text-blue-100 text-sm lg:text-base">{content[language].feature1Desc}</p>
               </div>
             </div>
 
-            <div className="flex items-start gap-4">
-              <div className="shrink-0 w-12 h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                <Shield className="w-6 h-6 text-green-300" />
+            <div className="flex items-start gap-3 lg:gap-4">
+              <div className="shrink-0 w-10 lg:w-12 h-10 lg:h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                <Shield className="w-5 lg:w-6 h-5 lg:h-6 text-green-300" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-1">{content[language].feature2}</h3>
-                <p className="text-blue-100">{content[language].feature2Desc}</p>
+                <h3 className="text-base lg:text-lg font-semibold mb-1">{content[language].feature2}</h3>
+                <p className="text-blue-100 text-sm lg:text-base">{content[language].feature2Desc}</p>
               </div>
             </div>
 
-            <div className="flex items-start gap-4">
-              <div className="shrink-0 w-12 h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-blue-300" />
+            <div className="flex items-start gap-3 lg:gap-4">
+              <div className="shrink-0 w-10 lg:w-12 h-10 lg:h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                <Sparkles className="w-5 lg:w-6 h-5 lg:h-6 text-blue-300" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold mb-1">{content[language].feature3}</h3>
-                <p className="text-blue-100">{content[language].feature3Desc}</p>
+                <h3 className="text-base lg:text-lg font-semibold mb-1">{content[language].feature3}</h3>
+                <p className="text-blue-100 text-sm lg:text-base">{content[language].feature3Desc}</p>
               </div>
             </div>
           </div>
@@ -197,7 +197,7 @@ const LoginPage = ({ language = 'en' }) => {
       </div>
 
       {/* Right Side - Form Section */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-gray-50 pattern-dots">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8 bg-gray-50 pattern-dots">
         <Card className="w-full max-w-md shadow-md border border-black/80 ">
           {/* Mobile Header */}
           <div className="lg:hidden mb-8 text-center">
