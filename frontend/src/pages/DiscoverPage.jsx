@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { ArrowRight, ArrowLeft, Sparkles, User, Calendar, MapPin, Home, Briefcase, DollarSign, Users, Loader2, CheckCircle2, Info, ExternalLink } from 'lucide-react'
-import { motion, AnimatePresence } from 'motion/react'
+import { ArrowRight, ArrowLeft, Sparkles, User, Calendar, MapPin, Home, Briefcase, IndianRupee, Users, CheckCircle2, Info, ExternalLink, ShieldCheck, FileText, Search, Landmark, Target } from 'lucide-react'
+import { motion as Motion, AnimatePresence } from 'motion/react'
 import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -9,7 +9,6 @@ import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import Navbar from '@/components/Navbar'
-import { schemeAPI } from '@/lib/api'
 import { Link } from 'react-router-dom'
 
 const formSchema = z.object({
@@ -53,7 +52,6 @@ const DiscoverPage = ({ language, setLanguage }) => {
   const [loading, setLoading] = useState(false)
   const [schemes, setSchemes] = useState([])
   const [showResults, setShowResults] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('')
 
   const content = {
     en: {
@@ -147,7 +145,7 @@ const DiscoverPage = ({ language, setLanguage }) => {
         {
           id: 'income',
           title: 'What is your annual income? (in Lakhs)',
-          icon: DollarSign,
+          icon: IndianRupee,
           placeholder: 'Enter annual income (in ₹ Lakhs)'
         },
         {
@@ -256,7 +254,7 @@ const DiscoverPage = ({ language, setLanguage }) => {
         {
           id: 'income',
           title: 'आपकी वार्षिक आय क्या है? (लाख में)',
-          icon: DollarSign,
+          icon: IndianRupee,
           placeholder: 'वार्षिक आय दर्ज करें (लाख ₹ में)'
         },
         {
@@ -370,7 +368,7 @@ const DiscoverPage = ({ language, setLanguage }) => {
           if (eligibilityObj.land_required) parts.push('Land ownership required')
           
           scheme.eligibility = parts.join(' • ')
-        } catch (e) {
+        } catch {
           // If parsing fails, use raw text
           scheme.eligibility = eligibilityRaw
         }
@@ -383,7 +381,7 @@ const DiscoverPage = ({ language, setLanguage }) => {
           const jsonStr = docsRaw.replace(/'/g, '"')
           const docsArray = JSON.parse(jsonStr)
           scheme.documents = docsArray.join(', ')
-        } catch (e) {
+        } catch {
           scheme.documents = docsRaw
         }
       } else if (line.includes('State:')) {
@@ -404,7 +402,6 @@ const DiscoverPage = ({ language, setLanguage }) => {
       setLoading(true)
       setShowResults(false)
       
-      // Simulate API call delay
       await new Promise(resolve => setTimeout(resolve, 2000))
       
       // Mock data selection based on occupation
@@ -468,17 +465,14 @@ const DiscoverPage = ({ language, setLanguage }) => {
         }
       }
       
-      // Select mock data based on occupation, default to student
       const response = mockData[validatedData.occupation] || mockData.student
       
-      // Parse schemes from RAG response
       const parsedSchemes = response.results.map(result => ({
         ...parseSchemeText(result.scheme_text),
         relevanceScore: result.relevance_score
       }))
       
       setSchemes(parsedSchemes)
-      setSearchQuery(response.query)
       setShowResults(true)
       setLoading(false)
       
@@ -515,37 +509,68 @@ const DiscoverPage = ({ language, setLanguage }) => {
     })
   }
 
+  const profileSnapshot = [
+    { label: language === 'en' ? 'Age' : 'आयु', value: formData.age ? `${formData.age}` : '--', iconElement: <Calendar className="mb-3 h-4 w-4 text-emerald-300" /> },
+    { label: language === 'en' ? 'Location' : 'स्थान', value: formData.state ? formData.state.replaceAll('_', ' ') : '--', iconElement: <MapPin className="mb-3 h-4 w-4 text-emerald-300" /> },
+    { label: language === 'en' ? 'Income' : 'आय', value: formData.income ? `₹${formData.income}L` : '--', iconElement: <IndianRupee className="mb-3 h-4 w-4 text-emerald-300" /> },
+    { label: language === 'en' ? 'Work' : 'कार्य', value: formData.occupation ? formData.occupation.replaceAll('_', ' ') : '--', iconElement: <Briefcase className="mb-3 h-4 w-4 text-emerald-300" /> },
+  ]
+
+  const resultHighlights = [
+    { label: language === 'en' ? 'RAG ranked' : 'RAG रैंकिंग', value: schemes.length, iconElement: <Sparkles className="mb-3 h-5 w-5 text-emerald-300" /> },
+    { label: language === 'en' ? 'Documents mapped' : 'दस्तावेज मैप', value: schemes.filter((scheme) => scheme.documents).length, iconElement: <FileText className="mb-3 h-5 w-5 text-emerald-300" /> },
+    { label: language === 'en' ? 'All India coverage' : 'भारत कवरेज', value: schemes.filter((scheme) => scheme.state === 'All').length, iconElement: <Landmark className="mb-3 h-5 w-5 text-emerald-300" /> },
+  ]
+
   // Loading screen
   if (loading) {
     return (
-      <div className="min-h-screen pattern-dots">
+      <div className="min-h-screen overflow-hidden bg-[#07110d] text-white">
         <Navbar language={language} setLanguage={setLanguage} />
-        <div className="flex flex-col items-center justify-center min-h-[80vh]">
-          <motion.div
+        <div className="relative flex min-h-[80vh] flex-col items-center justify-center px-4">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.22),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(250,204,21,0.12),transparent_28%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:42px_42px] opacity-30" />
+          <Motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="relative"
+            className="relative z-10"
           >
-            <div className="w-24 h-24 border-4 border-gov-blue-200 border-t-gov-blue-600 rounded-full animate-spin" />
-            <Sparkles className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-10 h-10 text-gov-blue-600" />
-          </motion.div>
-          <motion.h2
+            <div className="h-28 w-28 rounded-full border border-emerald-300/20 bg-white/5 shadow-[0_0_80px_rgba(16,185,129,0.32)] backdrop-blur-xl" />
+            <div className="absolute inset-3 rounded-full border-4 border-emerald-200/20 border-t-emerald-400 animate-spin" />
+            <Sparkles className="absolute left-1/2 top-1/2 h-10 w-10 -translate-x-1/2 -translate-y-1/2 text-emerald-300" />
+          </Motion.div>
+          <Motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="mt-8 text-2xl font-semibold text-gray-900"
+            className="relative z-10 mt-8 text-center text-2xl font-semibold text-white sm:text-3xl"
           >
             {language === 'en' ? 'Discovering Schemes...' : 'योजनाएं खोजी जा रही हैं...'}
-          </motion.h2>
-          <motion.p
+          </Motion.h2>
+          <Motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="mt-2 text-gray-600"
+            className="relative z-10 mt-2 max-w-md text-center text-sm text-emerald-50/70 sm:text-base"
           >
             {language === 'en' ? 'Finding the best matches for you' : 'आपके लिए सर्वोत्तम मिलान खोज रहे हैं'}
-          </motion.p>
+          </Motion.p>
+          <div className="relative z-10 mt-8 grid w-full max-w-xl grid-cols-3 gap-2 rounded-lg border border-white/10 bg-white/[0.04] p-2 backdrop-blur-xl sm:gap-3">
+            {[Search, Target, ShieldCheck].map((StepIcon, index) => (
+              <div key={index} className="flex h-20 flex-col items-center justify-center rounded-md bg-black/20 text-emerald-100/80">
+                <StepIcon className="mb-2 h-5 w-5 text-emerald-300" />
+                <div className="h-1.5 w-14 overflow-hidden rounded-full bg-white/10">
+                  <Motion.div
+                    className="h-full rounded-full bg-emerald-400"
+                    initial={{ width: '0%' }}
+                    animate={{ width: '100%' }}
+                    transition={{ duration: 1.1, repeat: Infinity, delay: index * 0.18 }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     )
@@ -554,76 +579,92 @@ const DiscoverPage = ({ language, setLanguage }) => {
   // Results screen
   if (showResults) {
     return (
-      <div className="min-h-screen pattern-dots">
+      <div className="min-h-screen bg-[#07110d] text-white">
         <Navbar language={language} setLanguage={setLanguage} />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(16,185,129,0.20),transparent_30%),radial-gradient(circle_at_80%_0%,rgba(250,204,21,0.10),transparent_28%)]" />
+          <div className="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           {/* Results Header */}
-          <motion.div
+          <Motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-8"
+            className="mb-8 grid gap-6 lg:grid-cols-[1fr_360px] lg:items-end"
           >
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
-              <CheckCircle2 className="w-8 h-8 text-green-600" />
+            <div>
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1.5 text-xs font-medium text-emerald-100">
+                <CheckCircle2 className="h-4 w-4 text-emerald-300" />
+                {language === 'en' ? 'Eligibility scan complete' : 'पात्रता जांच पूरी'}
+              </div>
+              <h1 className="max-w-3xl text-3xl font-semibold leading-tight text-white sm:text-5xl">
+                {language === 'en' ? `${schemes.length} strong matches for your profile` : `आपकी प्रोफ़ाइल के लिए ${schemes.length} बेहतर योजनाएं`}
+              </h1>
+              <p className="mt-4 max-w-2xl text-sm leading-6 text-emerald-50/70 sm:text-base">
+                {language === 'en'
+                  ? 'Ranked recommendations with eligibility signals, benefits, and document requirements ready for review.'
+                  : 'पात्रता, लाभ और जरूरी दस्तावेजों के साथ रैंक की गई सिफारिशें।'}
+              </p>
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
-              {language === 'en' ? `Found ${schemes.length} Schemes For You!` : `आपके लिए ${schemes.length} योजनाएं मिलीं!`}
-            </h1>
-            {/* <p className="text-gray-600 max-w-2xl mx-auto">
-              {searchQuery}
-            </p> */}
-          </motion.div>
+            <div className="grid grid-cols-3 gap-2 rounded-lg border border-white/10 bg-white/[0.05] p-2 backdrop-blur-xl">
+              {resultHighlights.map(({ label, value, iconElement }) => (
+                <div key={label} className="rounded-md bg-black/20 p-3">
+                  {iconElement}
+                  <p className="text-2xl font-semibold text-white">{value}</p>
+                  <p className="mt-1 text-[11px] leading-4 text-emerald-50/60">{label}</p>
+                </div>
+              ))}
+            </div>
+          </Motion.div>
 
           {/* Schemes Grid */}
-          <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 mb-6 sm:mb-8">
+          <div className="mb-6 grid gap-4 sm:mb-8 sm:gap-5 md:grid-cols-2 lg:grid-cols-3">
             <AnimatePresence>
               {schemes.map((scheme, index) => (
-                <motion.div
+                <Motion.div
                   key={scheme.id || index}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                   className="h-full"
                 >
-                  <Card className="h-auto sm:h-[500px] flex flex-col hover:shadow-lg transition-shadow border-l-4 border-l-gov-blue-500">
-                    <CardContent className="p-4 sm:p-6 flex flex-col h-full">
+                  <Card className="group h-full overflow-hidden rounded-lg border border-white/10 bg-white/[0.06] text-white shadow-none backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300/40 hover:bg-white/[0.08] hover:shadow-[0_24px_80px_rgba(0,0,0,0.28)]">
+                    <CardContent className="flex h-full flex-col p-4 sm:p-5">
                       {/* Relevance Badge */}
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gov-blue-100 text-gov-blue-800">
+                      <div className="mb-4 flex items-center justify-between gap-3">
+                        <span className="inline-flex items-center rounded-full border border-emerald-300/20 bg-emerald-300/10 px-2.5 py-1 text-xs font-medium text-emerald-100">
                           {scheme.category || 'General'}
                         </span>
-                        {/* <div className="flex items-center gap-1 text-sm text-gray-500">
+                        <div className="flex items-center gap-1 text-xs text-emerald-50/60">
                           <Sparkles className="w-4 h-4" />
-                          <span>{((1 - scheme.relevanceScore) * 100).toFixed(0)}% Match</span>
-                        </div> */}
+                          <span>{Math.max(1, ((1 - scheme.relevanceScore) * 100)).toFixed(0)}% fit</span>
+                        </div>
                       </div>
 
                       {/* Scheme Name */}
-                      <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+                      <h3 className="mb-2 line-clamp-2 min-h-12 text-lg font-semibold leading-6 text-white">
                         {scheme.name || 'Government Scheme'}
                       </h3>
 
                       {/* State */}
                       {scheme.state && (
-                        <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3">
-                          <MapPin className="w-3 sm:w-4 h-3 sm:h-4" />
+                        <div className="mb-3 flex items-center gap-2 text-xs text-emerald-50/60">
+                          <MapPin className="h-4 w-4 text-emerald-300" />
                           <span>{scheme.state}</span>
                         </div>
                       )}
 
                       {/* Description */}
-                      <p className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4 line-clamp-2 sm:line-clamp-3">
+                      <p className="mb-4 line-clamp-3 text-sm leading-6 text-emerald-50/68">
                         {scheme.description || 'No description available'}
                       </p>
 
                       {/* Eligibility */}
                       {scheme.eligibility && (
-                        <div className="mb-4">
+                        <div className="mb-3 rounded-md border border-white/10 bg-black/18 p-3">
                           <div className="flex items-start gap-2 text-sm">
-                            <User className="w-4 h-4 text-purple-600 mt-0.5 shrink-0" />
+                            <User className="mt-0.5 h-4 w-4 shrink-0 text-amber-300" />
                             <div>
-                              <p className="text-xs font-medium text-gray-700 mb-1">Eligibility:</p>
-                              <p className="text-gray-600 text-xs line-clamp-2">{scheme.eligibility}</p>
+                              <p className="mb-1 text-xs font-medium text-white">Eligibility</p>
+                              <p className="line-clamp-2 text-xs leading-5 text-emerald-50/65">{scheme.eligibility}</p>
                             </div>
                           </div>
                         </div>
@@ -631,10 +672,10 @@ const DiscoverPage = ({ language, setLanguage }) => {
 
                       {/* Benefits */}
                       {scheme.benefits && (
-                        <div className="mb-4">
+                        <div className="mb-3">
                           <div className="flex items-start gap-2 text-sm">
-                            <CheckCircle2 className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
-                            <p className="text-gray-700 line-clamp-2">{scheme.benefits}</p>
+                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
+                            <p className="line-clamp-2 text-sm leading-5 text-emerald-50/75">{scheme.benefits}</p>
                           </div>
                         </div>
                       )}
@@ -643,8 +684,8 @@ const DiscoverPage = ({ language, setLanguage }) => {
                       {scheme.documents && (
                         <div className="mb-4">
                           <div className="flex items-start gap-2 text-sm">
-                            <Info className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />
-                            <p className="text-gray-600 text-xs line-clamp-2">
+                            <Info className="mt-0.5 h-4 w-4 shrink-0 text-sky-300" />
+                            <p className="line-clamp-2 text-xs leading-5 text-emerald-50/60">
                               <span className="font-medium">Docs:</span> {scheme.documents}
                             </p>
                           </div>
@@ -660,30 +701,31 @@ const DiscoverPage = ({ language, setLanguage }) => {
                         state={{ scheme }} 
                         className="mt-auto"
                       >
-                        <Button variant="outline" size="sm" className="w-full gap-2">
+                        <Button variant="outline" size="lg" className="h-10 w-full gap-2 border-white/10 bg-white/5 text-white hover:border-emerald-300/30 hover:bg-emerald-300/10">
                           View Details
                           <ExternalLink className="w-4 h-4" />
                         </Button>
                       </Link>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </Motion.div>
               ))}
             </AnimatePresence>
           </div>
 
           {/* Actions */}
-          <motion.div
+          <Motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="text-center"
+            className="pb-10 text-center"
           >
-            <Button onClick={handleStartOver} size="lg" className="gap-2">
+            <Button onClick={handleStartOver} size="lg" className="h-11 gap-2 bg-emerald-500 px-5 text-zinc-950 hover:bg-emerald-300">
               <ArrowLeft className="w-5 h-5" />
               {language === 'en' ? 'Search Again' : 'फिर से खोजें'}
             </Button>
-          </motion.div>
+          </Motion.div>
+          </div>
         </div>
       </div>
     )
@@ -709,57 +751,108 @@ const DiscoverPage = ({ language, setLanguage }) => {
   const Icon = currentStepData.icon
 
   return (
-    <div className="min-h-screen pattern-dots">
+    <div className="min-h-screen bg-[#07110d] text-white">
       <Navbar language={language} setLanguage={setLanguage} />
       
-      <div className="bg-white border-b border-gray-200">
-        <div className="h-1 bg-gray-200">
+      <div className="border-b border-white/5 bg-black/20">
+        <div className="h-1 bg-white/10">
           <div 
-            className="h-full bg-gov-blue-600 transition-all duration-500 ease-out"
+            className="h-full bg-gradient-to-r from-emerald-400 via-lime-300 to-amber-300 shadow-[0_0_18px_rgba(16,185,129,0.45)] transition-all duration-500 ease-out"
             style={{ width: `${progress}%` }}
           />
         </div>
       </div>
       
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="text-center mb-4 sm:mb-6">
-          <h1 className="pt-8 sm:pt-10 text-2xl sm:text-3xl md:text-4xl font-semibold text-gray-900 font-poppins mb-2">
-            {content[language].title}
-          </h1>
-          <p className="text-gray-600 text-sm sm:text-lg font-medium px-4">{content[language].subtitle}</p>
-          
-          {/* Step indicators */}
-          <div className="flex justify-center gap-2 mt-8">
-            {steps.map((_, index) => (
-              <div
-                key={index}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  index === currentStep
-                    ? 'w-8 bg-gov-blue-600'
-                    : index < currentStep
-                    ? 'w-2 bg-gov-blue-500'
-                    : 'w-2 bg-gray-300'
-                }`}
-              />
-            ))}
-          </div>
-        </div>
+      <main className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_8%_18%,rgba(16,185,129,0.20),transparent_28%),radial-gradient(circle_at_92%_4%,rgba(250,204,21,0.12),transparent_24%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:44px_44px] opacity-35" />
 
-        {/* Question Card */}
-        <Card className="shadow-sm min-h-[350px] flex flex-col mt-6 sm:mt-8 shadow-md">
-        <CardContent className="p-5 sm:p-8 flex-grow flex flex-col">
-            <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
-              <div className="w-8 sm:w-10 h-8 sm:h-10 rounded-full bg-gov-blue-50 flex items-center justify-center flex-shrink-0">
-                <Icon className="w-4 sm:w-5 h-4 sm:h-5 text-gov-blue-600" />
+        <div className="relative mx-auto grid max-w-7xl gap-6 px-4 pb-8 pt-20 sm:px-6 sm:pt-24 lg:grid-cols-[360px_1fr] lg:px-8 lg:pb-12 lg:pt-28">
+          <aside className="lg:sticky lg:top-24 lg:h-fit">
+            <div className="rounded-lg border border-white/10 bg-white/[0.055] p-5 shadow-none backdrop-blur-xl">
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-xs font-medium text-emerald-100">
+                <Sparkles className="h-3.5 w-3.5 text-emerald-300" />
+                {language === 'en' ? 'Smart eligibility checker' : 'स्मार्ट पात्रता जांच'}
               </div>
-              <h2 className="text-base sm:text-xl font-semibold text-gray-900">
+              <h1 className="mt-5 text-3xl font-semibold leading-tight text-white sm:text-4xl lg:text-5xl">
+                {content[language].title}
+              </h1>
+              <p className="mt-4 text-sm leading-6 text-emerald-50/70">
+                {content[language].subtitle}
+              </p>
+
+              <div className="mt-6">
+                <div className="mb-2 flex items-center justify-between text-xs text-emerald-50/60">
+                  <span>{language === 'en' ? 'Question' : 'प्रश्न'} {currentStep + 1}/{totalSteps}</span>
+                  <span>{Math.round(progress)}%</span>
+                </div>
+                <div className="h-2 overflow-hidden rounded-full bg-white/10">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-lime-300 to-amber-300 transition-all duration-500"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+              </div>
+
+              <div className="mt-6 grid grid-cols-2 gap-2">
+                {profileSnapshot.map(({ label, value, iconElement }) => (
+                  <div key={label} className="min-h-24 rounded-md border border-white/10 bg-black/18 p-3">
+                    {iconElement}
+                    <p className="text-[11px] font-medium uppercase text-emerald-50/45">{label}</p>
+                    <p className="mt-1 line-clamp-2 text-sm capitalize text-white">{value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </aside>
+
+          <section>
+            {/* Step indicators */}
+            <div className="mb-4 flex gap-2 sm:mb-5">
+              {steps.map((step, index) => {
+                const StepIcon = step.icon
+                const isActive = index === currentStep
+                const isComplete = index < currentStep
+
+                return (
+                  <button
+                    key={step.id}
+                    type="button"
+                    onClick={() => index < currentStep && setCurrentStep(index)}
+                    className={`flex h-11 min-w-0 flex-1 items-center justify-center rounded-md border transition-all ${
+                      isActive
+                        ? 'border-emerald-300/40 bg-emerald-300/12 text-emerald-100 shadow-[0_0_26px_rgba(16,185,129,0.16)]'
+                        : isComplete
+                        ? 'border-emerald-300/20 bg-emerald-300/8 text-emerald-200'
+                        : 'border-white/10 bg-white/[0.04] text-emerald-50/35'
+                    }`}
+                    aria-label={step.title}
+                  >
+                    <StepIcon className="h-4 w-4" />
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* Question Card */}
+            <Card className="min-h-[520px] overflow-hidden rounded-lg border border-white/10 bg-white/[0.065] text-white shadow-none backdrop-blur-xl hover:shadow-none">
+              <CardContent className="flex min-h-[430px] flex-col p-5 sm:p-8">
+            <div className="mb-7 flex items-start gap-4">
+              <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-md border border-emerald-300/20 bg-emerald-300/10">
+                <Icon className="h-7 w-7 text-emerald-300" />
+              </div>
+              <div>
+                <p className="mb-1 text-xs font-medium uppercase tracking-[0.18em] text-emerald-100/50">
+                  {language === 'en' ? 'Tell us about you' : 'अपनी जानकारी दें'}
+                </p>
+                <h2 className="text-xl font-semibold leading-8 text-white sm:text-2xl">
                 {currentStepData.title}
               </h2>
+              </div>
             </div>
 
             {/* Input Fields */}
-            <div className="space-y-3 flex-grow">
+            <div className="flex-grow space-y-3">
               {currentStepData.options ? (
                 currentStepData.options.length <= 3 ? (
                   // Radio Group for few options
@@ -767,17 +860,21 @@ const DiscoverPage = ({ language, setLanguage }) => {
                     value={formData[currentStepData.id]}
                     onValueChange={(value) => updateFormData(currentStepData.id, value)}
                   >
-                    <div className="grid gap-3">
+                    <div className="grid gap-3 sm:grid-cols-3">
                       {currentStepData.options.map((option) => (
                         <div
                           key={option.value}
-                          className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:border-gov-blue-400 hover:bg-gray-50 transition-all cursor-pointer"
+                          className={`group flex min-h-28 cursor-pointer flex-col justify-between rounded-lg border p-4 transition-all ${
+                            formData[currentStepData.id] === option.value
+                              ? 'border-emerald-300/50 bg-emerald-300/12 shadow-[0_18px_50px_rgba(16,185,129,0.12)]'
+                              : 'border-white/10 bg-black/18 hover:border-emerald-300/35 hover:bg-emerald-300/8'
+                          }`}
                           onClick={() => updateFormData(currentStepData.id, option.value)}
                         >
-                          <RadioGroupItem value={option.value} id={option.value} />
+                          <RadioGroupItem value={option.value} id={option.value} className="border-white/30 text-emerald-300" />
                           <Label
                             htmlFor={option.value}
-                            className="flex-1 cursor-pointer font-medium text-gray-700"
+                            className="mt-6 cursor-pointer text-base font-semibold text-white group-hover:text-emerald-100"
                           >
                             {option.label}
                           </Label>
@@ -791,12 +888,16 @@ const DiscoverPage = ({ language, setLanguage }) => {
                     value={formData[currentStepData.id]}
                     onValueChange={(value) => updateFormData(currentStepData.id, value)}
                   >
-                    <SelectTrigger className="w-full h-11">
+                    <SelectTrigger className="h-13 w-full rounded-lg border-white/10 bg-black/24 px-4 text-white hover:border-emerald-300/25 data-[placeholder]:text-emerald-50/35 [&_svg]:text-emerald-300">
                       <SelectValue placeholder={`Select ${currentStepData.id}`} />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="max-h-80 rounded-lg border-white/10 bg-[#07110d]/96 p-1 text-emerald-50 shadow-[0_24px_80px_rgba(0,0,0,0.35)] backdrop-blur-xl">
                       {currentStepData.options.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
+                        <SelectItem
+                          key={option.value}
+                          value={option.value}
+                          className="rounded-md py-2.5 pl-8 pr-3 text-sm text-emerald-50/78 focus:bg-emerald-300/10 focus:text-white data-[state=checked]:bg-emerald-300/12 data-[state=checked]:text-emerald-100 [&_svg]:text-emerald-300"
+                        >
                           {option.label}
                         </SelectItem>
                       ))}
@@ -806,7 +907,7 @@ const DiscoverPage = ({ language, setLanguage }) => {
               ) : currentStepData.id === 'age' ? (
                 // Age Slider
                 <div className="space-y-6">
-                  <motion.div 
+                  <Motion.div 
                     className="relative pt-2"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -816,27 +917,27 @@ const DiscoverPage = ({ language, setLanguage }) => {
                       type="range"
                       min="0"
                       max="115"
-                      value={formData.age || 0}
+                    value={formData.age || 0}
                       onChange={(e) => updateFormData('age', e.target.value)}
-                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+                      className="slider h-2 w-full cursor-pointer appearance-none rounded-lg bg-zinc-950"
                       style={{
-                        background: `linear-gradient(to right, rgb(59 130 246) 0%, rgb(59 130 246) ${(formData.age || 0) / 115 * 100}%, rgb(229 231 235) ${(formData.age || 0) / 115 * 100}%, rgb(229 231 235) 100%)`
+                        background: `linear-gradient(to right, rgb(52 211 153) 0%, rgb(190 242 100) ${(formData.age || 0) / 115 * 100}%, rgba(255,255,255,0.12) ${(formData.age || 0) / 115 * 100}%, rgba(255,255,255,0.12) 100%)`
                       }}
                     />
-                  </motion.div>
-                  <motion.div
+                  </Motion.div>
+                  <Motion.div
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 0.4, delay: 0.1 }}
                     className="flex justify-center"
                   >
-                    <div className="inline-flex items-center justify-center px-8 py-4 bg-gov-blue-50 border-2 border-gov-blue-200 rounded-xl">
-                      <span className="text-4xl font-bold text-gov-blue-600">
+                    <div className="inline-flex items-end justify-center rounded-lg border border-emerald-300/25 bg-emerald-300/10 px-8 py-5">
+                      <span className="text-5xl font-semibold leading-none text-emerald-200">
                         {formData.age || 0}
                       </span>
-                      <span className="ml-2 text-lg text-gray-600">years</span>
+                      <span className="ml-2 text-lg text-emerald-50/60">years</span>
                     </div>
-                  </motion.div>
+                  </Motion.div>
                 </div>
               ) : (
                 // Text Input
@@ -846,34 +947,34 @@ const DiscoverPage = ({ language, setLanguage }) => {
                     placeholder={currentStepData.placeholder}
                     value={formData[currentStepData.id]}
                     onChange={(e) => updateFormData(currentStepData.id, e.target.value)}
-                    className="h-11"
+                    className="h-13 rounded-lg border-white/10 bg-black/24 px-4 text-lg text-white placeholder:text-emerald-50/35"
                   />
                 </div>
               )}
               
               {/* Error Message */}
               {errors[currentStepData.id] && (
-                <motion.div
+                <Motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mt-3 text-sm text-red-600 font-medium"
+                  className="mt-3 rounded-md border border-red-400/20 bg-red-500/10 px-3 py-2 text-sm font-medium text-red-200"
                 >
                   {errors[currentStepData.id]}
-                </motion.div>
+                </Motion.div>
               )}
             </div>
-          </CardContent>
+              </CardContent>
 
         {/* Navigation Buttons */}
-        <div className="flex items-center justify-between mt-2 px-8 pb-5">
+        <div className="flex flex-col gap-3 border-t border-white/10 bg-black/18 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-8">
           <div className="flex gap-3">
             {currentStep > 0 && (
                 <Button
                 variant="outline"
                 onClick={handleBack}
-                className="gap-2"
+                className="h-10 gap-2 border-white/10 bg-white/[0.055] px-3 text-emerald-50 shadow-none backdrop-blur-xl transition-all duration-300 hover:-translate-x-0.5 hover:border-emerald-300/25 hover:bg-white/[0.09] hover:text-white"
                 >
-                <ArrowLeft className="w-4 h-4" />
+                <ArrowLeft className="h-4 w-4 text-emerald-300 transition-transform duration-300 group-hover/button:-translate-x-0.5" />
                 {content[language].back}
               </Button>
             )}
@@ -883,22 +984,24 @@ const DiscoverPage = ({ language, setLanguage }) => {
             <Button
               variant="ghost"
               onClick={handleSkip}
-              className="text-gray-600"
+              className="h-10 text-emerald-50/60 hover:bg-white/10 hover:text-white"
               >
               {content[language].skip}
             </Button>
             <Button
               onClick={handleNext}
               disabled={!isStepValid()}
-              className="gap-2 min-w-[120px]"
+              className="h-10 min-w-[140px] gap-2 bg-emerald-400 text-zinc-950 hover:bg-lime-300 hover:shadow-[0_0_22px_rgba(16,185,129,0.28)]"
             >
               {currentStep === totalSteps - 1 ? content[language].submit : content[language].next}
               {currentStep < totalSteps - 1 && <ArrowRight className="w-4 h-4" />}
             </Button>
           </div>
         </div>
-        </Card>
-      </div>
+            </Card>
+          </section>
+        </div>
+      </main>
     </div>
   )
 }

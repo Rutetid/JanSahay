@@ -1,5 +1,5 @@
 import { FileText, Bot, Sparkles } from 'lucide-react'
-import { motion } from 'motion/react'
+import { motion as Motion } from 'motion/react'
 import { Card, CardHeader, CardTitle, CardDescription } from './ui/card'
 
 const HowItWorks = ({ language }) => {
@@ -12,19 +12,16 @@ const HowItWorks = ({ language }) => {
           icon: FileText,
           title: '1. Share Your Details',
           description: 'Fill out a simple form with your basic information like age, income, occupation, and location.',
-          color: 'blue'
         },
         {
           icon: Bot,
           title: '2. AI Analysis',
           description: 'Our AI instantly analyzes your profile against hundreds of government schemes and their eligibility criteria.',
-          color: 'blue'
         },
         {
           icon: Sparkles,
           title: '3. Get Your Results',
           description: 'Receive a personalized list of schemes you qualify for, complete with application links and guidance.',
-          color: 'blue'
         }
       ]
     },
@@ -36,19 +33,16 @@ const HowItWorks = ({ language }) => {
           icon: FileText,
           title: '1. अपना विवरण साझा करें',
           description: 'अपनी बुनियादी जानकारी जैसे उम्र, आय, व्यवसाय और स्थान के साथ एक सरल फॉर्म भरें।',
-          color: 'blue'
         },
         {
           icon: Bot,
           title: '2. AI विश्लेषण',
           description: 'हमारा AI तुरंत सैकड़ों सरकारी योजनाओं और उनकी पात्रता मानदंडों के खिलाफ आपकी प्रोफ़ाइल का विश्लेषण करता है।',
-          color: 'blue'
         },
         {
           icon: Sparkles,
           title: '3. अपने परिणाम प्राप्त करें',
           description: 'आवेदन लिंक और मार्गदर्शन के साथ पूर्ण, आप जिन योजनाओं के लिए योग्य हैं, उनकी व्यक्तिगत सूची प्राप्त करें।',
-          color: 'blue'
         }
       ]
     }
@@ -56,26 +50,18 @@ const HowItWorks = ({ language }) => {
 
   const { title, subtitle, steps } = content[language]
 
-  const colorClasses = {
-    blue: 'border-blue-100 hover:border-blue-300 bg-blue-100',
-    purple: 'border-purple-100 hover:border-purple-300 bg-purple-100',
-    green: 'border-green-100 hover:border-green-300 bg-green-100'
-  }
-
-  const iconColorClasses = {
-    blue: 'text-gov-blue-600',
-    purple: 'text-purple-600',
-    green: 'text-green-600'
-  }
-
   return (
-    <section id="how-it-works" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-      <div className="text-center mb-8 sm:mb-12">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">{title}</h2>
-        <p className="text-base sm:text-xl text-gray-600">{subtitle}</p>
+    <section id="how-it-works" className="relative mx-auto max-w-7xl scroll-mt-24 px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+      <div className="absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+      <div className="mb-8 max-w-2xl sm:mb-12">
+        <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-xs font-medium text-emerald-100">
+          <Sparkles className="h-3.5 w-3.5 text-emerald-300" />
+          {subtitle}
+        </div>
+        <h2 className="text-3xl font-semibold leading-tight text-white sm:text-4xl md:text-5xl">{title}</h2>
       </div>
-      <motion.div 
-        className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 lg:gap-8"
+      <Motion.div 
+        className="grid grid-cols-1 gap-4 md:grid-cols-3"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
@@ -90,7 +76,7 @@ const HowItWorks = ({ language }) => {
         {steps.map((step, index) => {
           const Icon = step.icon
           return (
-            <motion.div
+            <Motion.div
               key={index}
               variants={{
                 hidden: { opacity: 0, y: 30 },
@@ -98,21 +84,21 @@ const HowItWorks = ({ language }) => {
               }}
               whileHover={{ y: -6, transition: { duration: 0.2 } }}
             >
-              <Card className={`border-2 h-full ${colorClasses[step.color]} transition-colors`}>
-                <CardHeader>
-                  <div className={`w-12 h-12 ${colorClasses[step.color]} rounded-full flex items-center justify-center mb-4`}>
-                    <Icon className={`w-6 h-6 ${iconColorClasses[step.color]}`} />
+              <Card className="h-full rounded-lg border border-white/10 bg-white/[0.055] text-white shadow-none backdrop-blur-xl transition-all hover:border-emerald-300/35 hover:bg-white/[0.08]">
+                <CardHeader className="p-5 sm:p-6">
+                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-md border border-emerald-300/20 bg-emerald-300/10">
+                    <Icon className="h-6 w-6 text-emerald-300" />
                   </div>
-                  <CardTitle>{step.title}</CardTitle>
-                  <CardDescription className="text-base">
+                  <CardTitle className="text-xl leading-7 text-white">{step.title}</CardTitle>
+                  <CardDescription className="text-sm leading-6 text-emerald-50/62">
                     {step.description}
                   </CardDescription>
                 </CardHeader>
               </Card>
-            </motion.div>
+            </Motion.div>
           )
         })}
-      </motion.div>
+      </Motion.div>
     </section>
   )
 }

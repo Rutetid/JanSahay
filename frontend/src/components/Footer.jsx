@@ -40,15 +40,15 @@ const Footer = ({ language }) => {
   }
 
   return (
-    <footer id="about" className="bg-gray-900 text-gray-300 py-10 sm:py-12">
+    <footer id="about" className="text-zinc-400 py-10 sm:py-12 border-t border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-8">
           <div className="sm:col-span-1 lg:col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              <Sparkles className="w-6 h-6 text-blue-400" />
+              <Sparkles className="w-6 h-6 text-emerald-400" />
               <span className="text-xl font-bold text-white">JanSahay</span>
             </div>
-            <p className="text-sm">
+            <p className="text-sm text-zinc-500">
               {content[language].tagline}
             </p>
           </div>
@@ -63,14 +63,20 @@ const Footer = ({ language }) => {
           </div>
           <div className="sm:col-span-2 lg:col-span-1">
             <h3 className="font-semibold text-white mb-3">{content[language].connect}</h3>
-            <p className="text-sm mb-2">{content[language].stayUpdated}</p>
+            <p className="text-sm mb-2 text-zinc-500">{content[language].stayUpdated}</p>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm">{content[language].subscribe}</Button>
+              <Button  size="sm" className="border-white/20 text-white hover:bg-white/10 bg-transparent">{content[language].subscribe}</Button>
             </div>
           </div>
         </div>
-        <div className="border-t border-gray-800 pt-6 sm:pt-8 text-center text-sm">
+        <div className="border-t border-white/10 pt-6 sm:pt-8 text-center text-sm text-zinc-500">
           <p>{content[language].copyright}</p>
+          <p className="mt-2">
+            Made with ❤️ by{' '}
+            <a href="https://github.com/Rutetid" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300 transition-colors">
+              Abhishek
+            </a>
+          </p>
         </div>
       </div>
     </footer>

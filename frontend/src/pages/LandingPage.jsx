@@ -1,21 +1,19 @@
-import Navbar from '../components/Navbar'
-import HeroSection from '../components/HeroSection'
+import HeroSection from '../components/hero-section'
 import HowItWorks from '../components/HowItWorks'
 import KeyFeatures from '../components/KeyFeatures'
 import CTASection from '../components/CTASection'
 import Footer from '../components/Footer'
 import AIAssistant from '../components/AIAssistant'
 
-const LandingPage = ({ language, setLanguage }) => {
+const LandingPage = ({ language }) => {
   return (
-    <div className="min-h-screen bg-white pattern-dots">
-      <Navbar language={language} setLanguage={setLanguage} />
+    <div className="min-h-screen bg-[#07110d] text-white">
       <HeroSection language={language} />
       <HowItWorks language={language} />
       <KeyFeatures language={language} />
       <CTASection language={language} />
       <Footer language={language} />
-      <AIAssistant language={language} />
+      {/* <AIAssistant language={language} /> */}
     </div>
   )
 }

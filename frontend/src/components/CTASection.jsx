@@ -1,6 +1,6 @@
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { motion } from 'motion/react'
+import { motion as Motion } from 'motion/react'
 import { Button } from './ui/button'
 import { Card, CardContent } from './ui/card'
 
@@ -8,7 +8,7 @@ const CTASection = ({ language }) => {
   const content = {
     en: {
       title: 'Ready to Discover Your Benefits?',
-      subtitle: 'Join thousands of Indians who have found government schemes they didn\'t know existed.',
+      subtitle: "Join thousands of Indians who have found government schemes they didn't know existed.",
       cta: 'Start Your Journey'
     },
     hi: {
@@ -19,30 +19,33 @@ const CTASection = ({ language }) => {
   }
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-      <motion.div
+    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+      <Motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <Card className="bg-blue-900 border-none">
-          <CardContent className="p-6 sm:p-10 lg:p-12 text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4">
+        <Card className="overflow-hidden rounded-lg border border-emerald-300/20 bg-emerald-300/10 text-white shadow-[0_28px_110px_rgba(0,0,0,0.28)] backdrop-blur-xl">
+          <CardContent className="relative p-6 text-center sm:p-10 lg:p-12">
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:36px_36px] opacity-25" />
+            <div className="relative">
+            <h2 className="mb-3 text-2xl font-semibold text-white sm:mb-4 sm:text-3xl md:text-5xl">
               {content[language].title}
             </h2>
-            <p className="text-base sm:text-xl text-blue-100 mb-6 sm:mb-8 max-w-2xl mx-auto">
+            <p className="mx-auto mb-6 max-w-2xl text-base leading-7 text-emerald-50/72 sm:mb-8 sm:text-xl">
               {content[language].subtitle}
             </p>
-            <Link to="/discover">
-              <Button size="lg" variant="secondary" className="text-base sm:text-lg px-6 sm:px-8 text-gray-900">
+<Link to="/discover">
+              <Button size="lg" className="h-11 bg-emerald-400 px-6 text-base text-zinc-950 transition-all duration-300 hover:bg-lime-300 hover:shadow-[0_0_24px_rgba(16,185,129,0.35)] sm:px-8 sm:text-lg">
                 {content[language].cta}
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
+            </div>
           </CardContent>
         </Card>
-      </motion.div>
+      </Motion.div>
     </section>
   )
 }

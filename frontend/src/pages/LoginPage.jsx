@@ -1,31 +1,25 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { Mail, Lock, User, Loader2, Sparkles, Shield, Zap, ArrowRight } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/contexts/AuthContext'
-import { Card } from '../components/ui/card'
 
 const LoginPage = ({ language = 'en' }) => {
   const navigate = useNavigate()
   const { login, signup } = useAuth()
-  const [isLogin, setIsLogin] = useState(true)
+  const [isLogin, setIsLogin] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
-  const [verificationEmail, setVerificationEmail] = useState('')
-  
-  // Login form state
+
   const [loginEmail, setLoginEmail] = useState('')
   const [loginPassword, setLoginPassword] = useState('')
-  
-  // Signup form state
+
   const [signupName, setSignupName] = useState('')
   const [signupEmail, setSignupEmail] = useState('')
   const [signupPassword, setSignupPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
 
   const content = {
     en: {
@@ -36,11 +30,8 @@ const LoginPage = ({ language = 'en' }) => {
       fullName: 'Full Name',
       email: 'Email Address',
       password: 'Password',
-      confirmPassword: 'Confirm Password',
       loginButton: 'Sign In',
       signupButton: 'Create Account',
-      orContinueWith: 'Or continue with',
-      google: 'Continue with Google',
       noAccount: "Don't have an account?",
       hasAccount: 'Already have an account?',
       signupLink: 'Sign up',
@@ -63,11 +54,8 @@ const LoginPage = ({ language = 'en' }) => {
       fullName: 'पूरा नाम',
       email: 'ईमेल पता',
       password: 'पासवर्ड',
-      confirmPassword: 'पासवर्ड की पुष्टि करें',
       loginButton: 'साइन इन करें',
       signupButton: 'खाता बनाएं',
-      orContinueWith: 'या इसके साथ जारी रखें',
-      google: 'Google के साथ जारी रखें',
       noAccount: 'खाता नहीं है?',
       hasAccount: 'पहले से खाता है?',
       signupLink: 'साइन अप करें',
@@ -88,7 +76,6 @@ const LoginPage = ({ language = 'en' }) => {
     e.preventDefault()
     setError('')
     setLoading(true)
-
     try {
       const result = await login(loginEmail, loginPassword)
       if (result.success) {
@@ -106,27 +93,15 @@ const LoginPage = ({ language = 'en' }) => {
   const handleSignup = async (e) => {
     e.preventDefault()
     setError('')
-    setSuccess('')
-
     if (signupPassword.length < 6) {
       setError('Password must be at least 6 characters')
       return
     }
-
     setLoading(true)
-
     try {
       const result = await signup(signupName, signupEmail, signupPassword)
       if (result.success) {
-        if (result.requiresVerification) {
-          setSuccess(result.message || 'Please check your email to verify your account')
-          // Clear form
-          setSignupName('')
-          setSignupEmail('')
-          setSignupPassword('')
-        } else {
-          navigate('/')
-        }
+        navigate('/')
       } else {
         setError(result.error || 'Signup failed')
       }
@@ -138,275 +113,253 @@ const LoginPage = ({ language = 'en' }) => {
   }
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left Side - Hero Section */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gov-blue-700 relative overflow-hidden">
-        {/* Animated background patterns */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-64 h-64 lg:w-96 lg:h-96 bg-white rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-0 right-0 w-64 h-64 lg:w-96 lg:h-96 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-        </div>
+    <div className="min-h-screen bg-[#07110d] text-white flex">
+      <div className="fixed inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(16,185,129,0.20),transparent_30%),radial-gradient(circle_at_80%_80%,rgba(250,204,21,0.10),transparent_28%)] pointer-events-none" />
+      <div className="fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:44px_44px] opacity-35 pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col justify-center px-8 lg:px-16 text-white">
-          <Link to="/" className="absolute top-6 lg:top-8 left-6 lg:left-8 flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <Sparkles className="w-6 lg:w-8 h-6 lg:h-8" />
-            <span className="text-xl lg:text-2xl font-bold">JanSahay</span>
+      <div className="hidden lg:flex lg:w-1/2 relative items-center justify-center px-12 pb-12 pt-8">
+        <div className="relative z-10 max-w-lg">
+          <Link to="/" className="inline-flex items-center gap-2 text-emerald-300 hover:text-emerald-200 transition-colors mb-10">
+            <Sparkles className="w-6 h-6" />
+            <span className="text-xl font-bold">JanSahay</span>
           </Link>
 
-          <div>
-            <h1 className="text-3xl lg:text-5xl font-bold mb-4 lg:mb-6 leading-tight">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1.5 text-xs font-medium text-emerald-100 mb-6">
+              <Sparkles className="h-3.5 w-3.5 text-emerald-300" />
+              {language === 'en' ? 'Smart eligibility platform' : 'स्मार्ट पात्रता प्लेटफॉर्म'}
+            </div>
+
+            <h1 className="text-4xl font-semibold leading-tight text-white mb-5">
               {content[language].heroTitle}
             </h1>
-            <p className="text-lg lg:text-xl text-blue-100 mb-8 lg:mb-12">
+            <p className="text-base leading-7 text-emerald-50/70 mb-10">
               {content[language].heroSubtitle}
             </p>
-          </div>
+          </motion.div>
 
-          <div className="space-y-4 lg:space-y-6">
-            <div className="flex items-start gap-3 lg:gap-4">
-              <div className="shrink-0 w-10 lg:w-12 h-10 lg:h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                <Zap className="w-5 lg:w-6 h-5 lg:h-6 text-yellow-300" />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="space-y-5"
+          >
+            {[
+              { icon: Zap, color: 'text-amber-300', title: content[language].feature1, desc: content[language].feature1Desc },
+              { icon: Shield, color: 'text-emerald-300', title: content[language].feature2, desc: content[language].feature2Desc },
+              { icon: Sparkles, color: 'text-sky-300', title: content[language].feature3, desc: content[language].feature3Desc }
+            ].map(({ icon: Icon, color, title, desc }, i) => (
+              <div key={i} className="flex items-start gap-4">
+                <div className="shrink-0 w-10 h-10 rounded-lg border border-white/10 bg-white/[0.055] backdrop-blur-xl flex items-center justify-center">
+                  <Icon className={`w-5 h-5 ${color}`} />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-white">{title}</p>
+                  <p className="text-sm text-emerald-50/60">{desc}</p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-base lg:text-lg font-semibold mb-1">{content[language].feature1}</h3>
-                <p className="text-blue-100 text-sm lg:text-base">{content[language].feature1Desc}</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3 lg:gap-4">
-              <div className="shrink-0 w-10 lg:w-12 h-10 lg:h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                <Shield className="w-5 lg:w-6 h-5 lg:h-6 text-green-300" />
-              </div>
-              <div>
-                <h3 className="text-base lg:text-lg font-semibold mb-1">{content[language].feature2}</h3>
-                <p className="text-blue-100 text-sm lg:text-base">{content[language].feature2Desc}</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3 lg:gap-4">
-              <div className="shrink-0 w-10 lg:w-12 h-10 lg:h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                <Sparkles className="w-5 lg:w-6 h-5 lg:h-6 text-blue-300" />
-              </div>
-              <div>
-                <h3 className="text-base lg:text-lg font-semibold mb-1">{content[language].feature3}</h3>
-                <p className="text-blue-100 text-sm lg:text-base">{content[language].feature3Desc}</p>
-              </div>
-            </div>
-          </div>
+            ))}
+          </motion.div>
         </div>
       </div>
 
-      {/* Right Side - Form Section */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8 bg-gray-50 pattern-dots">
-        <Card className="w-full max-w-md shadow-md border border-black/80 ">
-          {/* Mobile Header */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8 lg:p-12">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="w-full max-w-md"
+        >
           <div className="lg:hidden mb-8 text-center">
-            <Link to="/" className="inline-flex items-center gap-2 text-gov-blue-600 hover:text-gov-blue-700 mb-6">
+            <Link to="/" className="inline-flex items-center gap-2 text-emerald-300 hover:text-emerald-200 mb-6">
               <Sparkles className="w-6 h-6" />
               <span className="text-xl font-bold">JanSahay</span>
             </Link>
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-xs font-medium text-emerald-100">
+              <Sparkles className="h-3.5 w-3.5" />
+              {language === 'en' ? 'Smart eligibility platform' : 'स्मार्ट पात्रता प्लेटफॉर्म'}
+            </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            {/* Toggle Tabs */}
-            <div className="flex gap-2 mb-8 bg-gray-100 p-1 rounded-lg">
+          <div className="rounded-lg border border-white/10 bg-white/[0.055] backdrop-blur-xl p-6 sm:p-8 shadow-none">
+            <div className="flex gap-2 mb-7 bg-white/10 p-1 rounded-lg">
               <button
-                onClick={() => {
-                  setIsLogin(true)
-                  setError('')
-                }}
-                className={`flex-1 py-2.5 rounded-md font-medium transition-all ${
-                  isLogin
-                    ? 'bg-white text-gov-blue-600 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
-                }`}
-              >
-                {content[language].loginButton}
-              </button>
-              <button
-                onClick={() => {
-                  setIsLogin(false)
-                  setError('')
-                }}
-                className={`flex-1 py-2.5 rounded-md font-medium transition-all ${
+                onClick={() => { setIsLogin(false); setError('') }}
+                className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-all ${
                   !isLogin
-                    ? 'bg-white text-gov-blue-600 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-emerald-400 text-zinc-950 shadow-sm'
+                    : 'text-emerald-50/60 hover:text-white'
                 }`}
               >
                 {content[language].signupButton}
               </button>
+              <button
+                onClick={() => { setIsLogin(true); setError('') }}
+                className={`flex-1 py-2.5 rounded-md text-sm font-medium transition-all ${
+                  isLogin
+                    ? 'bg-emerald-400 text-zinc-950 shadow-sm'
+                    : 'text-emerald-50/60 hover:text-white'
+                }`}
+              >
+                {content[language].loginButton}
+              </button>
+            </div>
+
+            <div className="mb-6">
+              <h2 className="text-2xl font-semibold text-white mb-2">
+                {isLogin ? content[language].login : content[language].signup}
+              </h2>
+              <p className="text-sm text-emerald-50/60">
+                {isLogin ? content[language].loginSubtitle : content[language].signupSubtitle}
+              </p>
             </div>
 
             {isLogin ? (
-              <div>
-                <div className="mb-6">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                      {content[language].login}
-                    </h2>
-                    <p className="text-gray-600">{content[language].loginSubtitle}</p>
+              <form onSubmit={handleLogin} className="space-y-5">
+                <div className="space-y-2">
+                  <Label className="text-sm text-emerald-50/80" htmlFor="login-email">{content[language].email}</Label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-3.5 h-5 w-5 text-emerald-300/50" />
+                    <Input
+                      id="login-email"
+                      type="email"
+                      placeholder="name@example.com"
+                      className="pl-10 h-12 bg-black/24 border-white/10 text-white placeholder:text-emerald-50/30 rounded-lg"
+                      value={loginEmail}
+                      onChange={(e) => setLoginEmail(e.target.value)}
+                      required
+                    />
                   </div>
-
-                  <form onSubmit={handleLogin} className="space-y-5">
-                    <div className="space-y-2">
-                      <Label htmlFor="login-email">{content[language].email}</Label>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                        <Input
-                          id="login-email"
-                          type="email"
-                          placeholder="name@example.com"
-                          className="pl-10 h-12"
-                          value={loginEmail}
-                          onChange={(e) => setLoginEmail(e.target.value)}
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="login-password">{content[language].password}</Label>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                        <Input
-                          id="login-password"
-                          type="password"
-                          placeholder="••••••••"
-                          className="pl-10 h-12"
-                          value={loginPassword}
-                          onChange={(e) => setLoginPassword(e.target.value)}
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    {error && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="p-3 bg-red-50 border border-red-200 rounded-lg"
-                      >
-                        <p className="text-sm text-red-600 font-medium">{error}</p>
-                      </motion.div>
-                    )}
-
-                    <Button type="submit" className="w-full h-12 text-base" disabled={loading}>
-                      {loading ? (
-                        <>
-                          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                          Loading...
-                        </>
-                      ) : (
-                        <>
-                          {content[language].loginButton}
-                          <ArrowRight className="ml-2 h-5 w-5" />
-                        </>
-                      )}
-                    </Button>
-                  </form>
                 </div>
-              ) : (
-                <div>
-                  <div className="mb-6">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                      {content[language].signup}
-                    </h2>
-                    <p className="text-gray-600">{content[language].signupSubtitle}</p>
+                <div className="space-y-2">
+                  <Label className="text-sm text-emerald-50/80" htmlFor="login-password">{content[language].password}</Label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-3.5 h-5 w-5 text-emerald-300/50" />
+                    <Input
+                      id="login-password"
+                      type="password"
+                      placeholder="••••••••"
+                      className="pl-10 h-12 bg-black/24 border-white/10 text-white placeholder:text-emerald-50/30 rounded-lg"
+                      value={loginPassword}
+                      onChange={(e) => setLoginPassword(e.target.value)}
+                      required
+                    />
                   </div>
-
-                  <form onSubmit={handleSignup} className="space-y-5">
-                    <div className="space-y-2">
-                      <Label htmlFor="signup-name">{content[language].fullName}</Label>
-                      <div className="relative">
-                        <User className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                        <Input
-                          id="signup-name"
-                          type="text"
-                          placeholder="John Doe"
-                          className="pl-10 h-12"
-                          value={signupName}
-                          onChange={(e) => setSignupName(e.target.value)}
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="signup-email">{content[language].email}</Label>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                        <Input
-                          id="signup-email"
-                          type="email"
-                          placeholder="name@example.com"
-                          className="pl-10 h-12"
-                          value={signupEmail}
-                          onChange={(e) => setSignupEmail(e.target.value)}
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="signup-password">{content[language].password}</Label>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                        <Input
-                          id="signup-password"
-                          type="password"
-                          placeholder="••••••••"
-                          className="pl-10 h-12"
-                          value={signupPassword}
-                          onChange={(e) => setSignupPassword(e.target.value)}
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    {/* <div className="space-y-2">
-                      <Label htmlFor="confirm-password">{content[language].confirmPassword}</Label>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
-                        <Input
-                          id="confirm-password"
-                          type="password"
-                          placeholder="••••••••"
-                          className="pl-10 h-12"
-                          value={confirmPassword}
-                          onChange={(e) => setConfirmPassword(e.target.value)}
-                          required
-                        />
-                      </div>
-                    </div> */}
-
-                    {error && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="p-3 bg-red-50 border border-red-200 rounded-lg"
-                      >
-                        <p className="text-sm text-red-600 font-medium">{error}</p>
-                      </motion.div>
-                    )}
-
-                    <Button type="submit" className="w-full h-12 text-base" disabled={loading}>
-                      {loading ? (
-                        <>
-                          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                          Loading...
-                        </>
-                      ) : (
-                        <>
-                          {content[language].signupButton}
-                          <ArrowRight className="ml-2 h-5 w-5" />
-                        </>
-                      )}
-                    </Button>
-                  </form>
                 </div>
-              )}
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-lg border border-red-400/20 bg-red-500/10 px-3 py-2.5"
+                  >
+                    <p className="text-sm font-medium text-red-200">{error}</p>
+                  </motion.div>
+                )}
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full h-12 gap-2 bg-emerald-400 text-zinc-950 hover:bg-lime-300 hover:shadow-[0_0_22px_rgba(16,185,129,0.28)] text-base font-medium"
+                >
+                  {loading ? (
+                    <><Loader2 className="h-5 w-5 animate-spin" /> Loading...</>
+                  ) : (
+                    <>{content[language].loginButton} <ArrowRight className="w-5 h-5" /></>
+                  )}
+                </Button>
+                <p className="text-center text-sm text-emerald-50/50">
+                  {content[language].noAccount}{' '}
+                  <button type="button" onClick={() => setIsLogin(false)} className="text-emerald-300 hover:text-emerald-200 font-medium">
+                    {content[language].signupLink}
+                  </button>
+                </p>
+              </form>
+            ) : (
+              <form onSubmit={handleSignup} className="space-y-5">
+                <div className="space-y-2">
+                  <Label className="text-sm text-emerald-50/80" htmlFor="signup-name">{content[language].fullName}</Label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-3.5 h-5 w-5 text-emerald-300/50" />
+                    <Input
+                      id="signup-name"
+                      type="text"
+                      placeholder="John Doe"
+                      className="pl-10 h-12 bg-black/24 border-white/10 text-white placeholder:text-emerald-50/30 rounded-lg"
+                      value={signupName}
+                      onChange={(e) => setSignupName(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm text-emerald-50/80" htmlFor="signup-email">{content[language].email}</Label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-3.5 h-5 w-5 text-emerald-300/50" />
+                    <Input
+                      id="signup-email"
+                      type="email"
+                      placeholder="name@example.com"
+                      className="pl-10 h-12 bg-black/24 border-white/10 text-white placeholder:text-emerald-50/30 rounded-lg"
+                      value={signupEmail}
+                      onChange={(e) => setSignupEmail(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm text-emerald-50/80" htmlFor="signup-password">{content[language].password}</Label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-3.5 h-5 w-5 text-emerald-300/50" />
+                    <Input
+                      id="signup-password"
+                      type="password"
+                      placeholder="••••••••"
+                      className="pl-10 h-12 bg-black/24 border-white/10 text-white placeholder:text-emerald-50/30 rounded-lg"
+                      value={signupPassword}
+                      onChange={(e) => setSignupPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-lg border border-red-400/20 bg-red-500/10 px-3 py-2.5"
+                  >
+                    <p className="text-sm font-medium text-red-200">{error}</p>
+                  </motion.div>
+                )}
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full h-12 gap-2 bg-emerald-400 text-zinc-950 hover:bg-lime-300 hover:shadow-[0_0_22px_rgba(16,185,129,0.28)] text-base font-medium"
+                >
+                  {loading ? (
+                    <><Loader2 className="h-5 w-5 animate-spin" /> Loading...</>
+                  ) : (
+                    <>{content[language].signupButton} <ArrowRight className="w-5 h-5" /></>
+                  )}
+                </Button>
+                <p className="text-center text-sm text-emerald-50/50">
+                  {content[language].hasAccount}{' '}
+                  <button type="button" onClick={() => setIsLogin(true)} className="text-emerald-300 hover:text-emerald-200 font-medium">
+                    {content[language].loginLink}
+                  </button>
+                </p>
+              </form>
+            )}
           </div>
-        </Card>
+
+          <p className="mt-6 text-center text-xs text-emerald-50/35">
+            <Link to="/" className="hover:text-emerald-300 transition-colors">
+              {content[language].backToHome}
+            </Link>
+          </p>
+        </motion.div>
       </div>
     </div>
   )

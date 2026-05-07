@@ -28,17 +28,14 @@ const SchemeDetailsPage = ({ language, setLanguage }) => {
   const location = useLocation()
   const [isSaved, setIsSaved] = useState(false)
   
-  // Get scheme data from location state or use mock data as fallback
   const schemeFromState = location.state?.scheme
   
   useEffect(() => {
-    // If no scheme data was passed, redirect back
-    if (!schemeFromState && !schemes[schemeId]) {
+    if (!schemeFromState && !['1', '2', '3'].includes(schemeId)) {
       navigate('/discover')
     }
   }, [schemeFromState, schemeId, navigate])
 
-  // If we have scheme data from DiscoverPage, use it
   if (schemeFromState) {
     const content = {
       en: {
@@ -71,45 +68,44 @@ const SchemeDetailsPage = ({ language, setLanguage }) => {
 
     const handleSaveScheme = () => {
       setIsSaved(!isSaved)
-      // TODO: Call API to save/unsave scheme
     }
 
     return (
-      <div className="min-h-screen pattern-dots">
+      <div className="min-h-screen bg-[#07110d] text-white">
         <Navbar language={language} setLanguage={setLanguage} />
         
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-          {/* Back Button */}
+        <div className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_8%_12%,rgba(16,185,129,0.06),transparent_28%)]" />
+          <div className="relative mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
           <Button
             variant="ghost"
             onClick={() => navigate(-1)}
-            className="mb-4 sm:mb-6 gap-2"
+            className="mb-4 gap-2 border border-white/10 bg-white/[0.04] px-3 text-emerald-50/75 shadow-none backdrop-blur-xl transition-all hover:border-emerald-400/20 hover:bg-white/[0.06] hover:text-white sm:mb-6"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="h-4 w-4 text-emerald-400/80" />
             {content[language].back}
           </Button>
 
-          {/* Header */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
+          <div className="mb-4 rounded-lg border border-white/10 bg-white/[0.04] p-4 shadow-none backdrop-blur-xl sm:mb-6 sm:p-6">
             <div className="flex items-start justify-between mb-3 sm:mb-4">
               <div className="flex-1">
                 <div className="flex items-center gap-2 sm:gap-3 mb-2">
-                  <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-sm font-medium bg-gov-blue-100 text-gov-blue-800">
+                  <span className="inline-flex items-center rounded-full border border-emerald-400/20 bg-emerald-400/8 px-2 py-1 text-sm font-medium text-emerald-50/80 sm:px-3">
                     {schemeFromState.category || 'General'}
                   </span>
                   {schemeFromState.relevanceScore && (
-                    <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-600">
-                      <Sparkles className="w-3 sm:w-4 h-3 sm:h-4" />
+                    <div className="flex items-center gap-1 text-xs text-emerald-50/45 sm:text-sm">
+                      <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-400/80" />
                       <span>{((1 - schemeFromState.relevanceScore) * 100).toFixed(0)}% Match</span>
                     </div>
                   )}
                 </div>
-                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                <h1 className="mb-2 text-xl font-semibold text-white sm:text-2xl md:text-3xl">
                   {schemeFromState.name}
                 </h1>
                 {schemeFromState.state && (
-                  <div className="flex items-center gap-1.5 sm:gap-2 text-sm text-gray-600">
-                    <MapPin className="w-3 sm:w-4 h-3 sm:h-4" />
+                  <div className="flex items-center gap-1.5 text-sm text-emerald-50/55 sm:gap-2">
+                    <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-400/80" />
                     <span>{schemeFromState.state}</span>
                   </div>
                 )}
@@ -117,81 +113,77 @@ const SchemeDetailsPage = ({ language, setLanguage }) => {
               <Button
                 onClick={handleSaveScheme}
                 variant={isSaved ? 'default' : 'outline'}
-                className="gap-2 flex-shrink-0 ml-2"
+                className="ml-2 flex-shrink-0 gap-2 border-white/10 bg-white/[0.04] text-emerald-50 hover:border-emerald-400/20 hover:bg-white/[0.07] hover:text-white"
               >
-                {isSaved ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+                {isSaved ? <BookmarkCheck className="h-4 w-4 text-emerald-400/80" /> : <Bookmark className="h-4 w-4 text-emerald-400/80" />}
                 {isSaved ? content[language].saved : content[language].saveScheme}
               </Button>
             </div>
           </div>
 
           <div className="grid gap-6">
-            {/* Description */}
             {schemeFromState.description && (
-              <Card>
+              <Card className="border border-white/10 bg-white/[0.04] text-white shadow-none backdrop-blur-xl">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Info className="w-5 h-5 text-gov-blue-600" />
+                    <Info className="h-5 w-5 text-emerald-400/80" />
                     {content[language].description}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 leading-relaxed">{schemeFromState.description}</p>
+                  <p className="leading-relaxed text-emerald-50/72">{schemeFromState.description}</p>
                 </CardContent>
               </Card>
             )}
 
-            {/* Eligibility */}
             {schemeFromState.eligibility && (
-              <Card>
+              <Card className="border border-white/10 bg-white/[0.04] text-white shadow-none backdrop-blur-xl">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <User className="w-5 h-5 text-purple-600" />
+                    <User className="h-5 w-5 text-emerald-400/80" />
                     {content[language].eligibility}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 leading-relaxed">{schemeFromState.eligibility}</p>
+                  <p className="leading-relaxed text-emerald-50/72">{schemeFromState.eligibility}</p>
                 </CardContent>
               </Card>
             )}
 
-            {/* Benefits */}
             {schemeFromState.benefits && (
-              <Card>
+              <Card className="border border-white/10 bg-white/[0.04] text-white shadow-none backdrop-blur-xl">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-green-600" />
+                    <CheckCircle2 className="h-5 w-5 text-emerald-400/80" />
                     {content[language].benefits}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 leading-relaxed">{schemeFromState.benefits}</p>
+                  <p className="leading-relaxed text-emerald-50/72">{schemeFromState.benefits}</p>
                 </CardContent>
               </Card>
             )}
 
-            {/* Required Documents */}
             {schemeFromState.documents && (
-              <Card>
+              <Card className="border border-white/10 bg-white/[0.04] text-white shadow-none backdrop-blur-xl">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-blue-600" />
+                    <FileText className="h-5 w-5 text-emerald-400/80" />
                     {content[language].documents}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 leading-relaxed">{schemeFromState.documents}</p>
+                  <p className="leading-relaxed text-emerald-50/72">{schemeFromState.documents}</p>
                 </CardContent>
               </Card>
             )}
+          </div>
           </div>
         </div>
       </div>
     )
   }
 
-  // Mock scheme data - fallback for direct navigation
   const schemes = {
     '1': {
       name: 'Pradhan Mantri Awas Yojana',
@@ -431,13 +423,13 @@ const SchemeDetailsPage = ({ language, setLanguage }) => {
 
   if (!scheme) {
     return (
-      <div className="min-h-screen pattern-dots">
+      <div className="min-h-screen bg-[#07110d] text-white">
         <Navbar language={language} setLanguage={setLanguage} />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Scheme not found</h2>
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-md rounded-lg border border-white/10 bg-white/[0.04] p-8 text-center shadow-none backdrop-blur-xl">
+            <h2 className="mb-4 text-2xl font-semibold text-white">Scheme not found</h2>
             <Link to="/profile">
-              <Button>Back to Profile</Button>
+              <Button className="border-white/10 bg-white/[0.04] text-emerald-50 hover:border-emerald-400/20 hover:bg-white/[0.07] hover:text-white">Back to Profile</Button>
             </Link>
           </div>
         </div>
@@ -446,40 +438,40 @@ const SchemeDetailsPage = ({ language, setLanguage }) => {
   }
 
   return (
-    <div className="min-h-screen pattern-dots">
+    <div className="min-h-screen bg-[#07110d] text-white">
       <Navbar language={language} setLanguage={setLanguage} />
       
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Back Button */}
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_8%_12%,rgba(16,185,129,0.06),transparent_28%)]" />
+        <div className="relative mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center text-gray-600 hover:text-gov-blue-600 mb-6"
+          className="mb-6 inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-emerald-50/70 transition-all hover:border-emerald-400/20 hover:bg-white/[0.07] hover:text-white"
         >
-          <ArrowLeft className="w-4 h-4 mr-2" />
+          <ArrowLeft className="h-4 w-4 text-emerald-400/80" />
           {content[language].backToProfile}
         </button>
 
-        {/* Header */}
-        <Card className="p-8 mb-6">
+        <Card className="mb-6 border border-white/10 bg-white/[0.04] p-6 text-white shadow-none backdrop-blur-xl sm:p-8">
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
             <div className="flex-1">
-              <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-sm font-medium rounded-full mb-3">
+              <span className="mb-3 inline-block rounded-full border border-emerald-400/20 bg-emerald-400/8 px-3 py-1 text-sm font-medium text-emerald-50/80">
                 {language === 'en' ? scheme.category : scheme.categoryHi}
               </span>
-              <h1 className="text-3xl font-bold text-gray-900 mb-3">
+              <h1 className="mb-3 text-3xl font-semibold text-white">
                 {language === 'en' ? scheme.name : scheme.nameHi}
               </h1>
-              <div className="flex flex-wrap gap-4 text-sm">
-                <div className="flex items-center gap-2 text-gray-600">
-                  <IndianRupee className="w-4 h-4" />
+              <div className="flex flex-wrap gap-4 text-sm text-emerald-50/60">
+                <div className="flex items-center gap-2">
+                  <IndianRupee className="h-4 w-4 text-emerald-400/80" />
                   <span>{language === 'en' ? scheme.benefit : scheme.benefitHi}</span>
                 </div>
-                <div className="flex items-center gap-2 text-gray-600">
-                  <Calendar className="w-4 h-4" />
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4 text-emerald-400/80" />
                   <span>{language === 'en' ? scheme.deadline : scheme.deadlineHi}</span>
                 </div>
-                <div className="flex items-center gap-2 text-gray-600">
-                  <Building2 className="w-4 h-4" />
+                <div className="flex items-center gap-2">
+                  <Building2 className="h-4 w-4 text-emerald-400/80" />
                   <span>{language === 'en' ? scheme.ministry : scheme.ministryHi}</span>
                 </div>
               </div>
@@ -489,48 +481,46 @@ const SchemeDetailsPage = ({ language, setLanguage }) => {
               <Button
                 variant="outline"
                 onClick={() => setIsSaved(!isSaved)}
-                className={isSaved ? 'border-blue-600 text-blue-600' : ''}
+                className={isSaved ? 'border-emerald-400/20 bg-emerald-400/8 text-emerald-50 hover:bg-emerald-400/12' : 'border-white/10 bg-white/[0.04] text-emerald-50 hover:border-emerald-400/20 hover:bg-white/[0.07]'}
               >
                 {isSaved ? (
                   <>
-                    <BookmarkCheck className="w-4 h-4 mr-2" />
+                    <BookmarkCheck className="mr-2 h-4 w-4 text-emerald-400/80" />
                     {content[language].saved}
                   </>
                 ) : (
                   <>
-                    <Bookmark className="w-4 h-4 mr-2" />
+                    <Bookmark className="mr-2 h-4 w-4 text-emerald-400/80" />
                     {content[language].saveScheme}
                   </>
                 )}
               </Button>
-              <Button onClick={() => window.open(scheme.officialWebsite, '_blank')}>
+              <Button onClick={() => window.open(scheme.officialWebsite, '_blank')} className="bg-emerald-400 text-[#06100c] hover:bg-emerald-300">
                 {content[language].applyNow}
-                <ExternalLink className="w-4 h-4 ml-2" />
+                <ExternalLink className="ml-2 h-4 w-4" />
               </Button>
             </div>
           </div>
         </Card>
 
-        {/* Overview */}
-        <Card className="mb-6">
+        <Card className="mb-6 border border-white/10 bg-white/[0.04] text-white shadow-none backdrop-blur-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Info className="w-5 h-5 text-gov-blue-600" />
+              <Info className="h-5 w-5 text-emerald-400/80" />
               {content[language].overview}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-700 leading-relaxed">
+            <p className="leading-relaxed text-emerald-50/72">
               {language === 'en' ? scheme.description : scheme.descriptionHi}
             </p>
           </CardContent>
         </Card>
 
-        {/* Eligibility */}
-        <Card className="mb-6">
+        <Card className="mb-6 border border-white/10 bg-white/[0.04] text-white shadow-none backdrop-blur-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Target className="w-5 h-5 text-gov-blue-600" />
+              <Target className="h-5 w-5 text-emerald-400/80" />
               {content[language].eligibility}
             </CardTitle>
           </CardHeader>
@@ -538,8 +528,8 @@ const SchemeDetailsPage = ({ language, setLanguage }) => {
             <ul className="space-y-3">
               {(language === 'en' ? scheme.eligibility : scheme.eligibilityHi).map((item, index) => (
                 <li key={index} className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700">{item}</span>
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-400/80" />
+                  <span className="text-emerald-50/72">{item}</span>
                 </li>
               ))}
             </ul>
@@ -547,11 +537,10 @@ const SchemeDetailsPage = ({ language, setLanguage }) => {
         </Card>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          {/* Benefits */}
-          <Card>
+          <Card className="border border-white/10 bg-white/[0.04] text-white shadow-none backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <IndianRupee className="w-5 h-5 text-gov-blue-600" />
+                <IndianRupee className="h-5 w-5 text-emerald-400/80" />
                 {content[language].benefits}
               </CardTitle>
             </CardHeader>
@@ -559,28 +548,27 @@ const SchemeDetailsPage = ({ language, setLanguage }) => {
               <ul className="space-y-3">
                 {(language === 'en' ? scheme.benefits : scheme.benefitsHi).map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">{item}</span>
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-400/80" />
+                    <span className="text-emerald-50/72">{item}</span>
                   </li>
                 ))}
               </ul>
             </CardContent>
           </Card>
 
-          {/* Required Documents */}
-          <Card>
+          <Card className="border border-white/10 bg-white/[0.04] text-white shadow-none backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <FileText className="w-5 h-5 text-gov-blue-600" />
+                <FileText className="h-5 w-5 text-emerald-400/80" />
                 {content[language].requiredDocuments}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">
                 {(language === 'en' ? scheme.documents : scheme.documentsHi).map((item, index) => (
-                  <li key={index} className="flex items-center gap-3 p-2 bg-gray-50 rounded-lg">
-                    <FileText className="w-4 h-4 text-gray-500 flex-shrink-0" />
-                    <span className="text-gray-700">{item}</span>
+                  <li key={index} className="flex items-center gap-3 rounded-lg border border-white/10 bg-black/10 p-2">
+                    <FileText className="h-4 w-4 flex-shrink-0 text-emerald-400/60" />
+                    <span className="text-emerald-50/72">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -588,11 +576,10 @@ const SchemeDetailsPage = ({ language, setLanguage }) => {
           </Card>
         </div>
 
-        {/* How to Apply */}
-        <Card className="mb-6">
+        <Card className="mb-6 border border-white/10 bg-white/[0.04] text-white shadow-none backdrop-blur-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <ClipboardList className="w-5 h-5 text-gov-blue-600" />
+              <ClipboardList className="h-5 w-5 text-emerald-400/80" />
               {content[language].howToApply}
             </CardTitle>
           </CardHeader>
@@ -600,34 +587,35 @@ const SchemeDetailsPage = ({ language, setLanguage }) => {
             <ol className="space-y-4">
               {(language === 'en' ? scheme.applicationProcess : scheme.applicationProcessHi).map((step, index) => (
                 <li key={index} className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 bg-gov-blue-600 text-white rounded-full flex items-center justify-center font-semibold">
+                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-emerald-400/20 bg-emerald-400/8 font-semibold text-emerald-50/85">
                     {index + 1}
                   </div>
-                  <span className="text-gray-700 pt-1">{step}</span>
+                  <span className="pt-1 text-emerald-50/72">{step}</span>
                 </li>
               ))}
             </ol>
           </CardContent>
         </Card>
 
-        {/* Action Footer */}
-        <div className="bg-white rounded-2xl shadow-sm p-6 flex flex-col sm:flex-row gap-4 items-center justify-between">
+        <div className="flex flex-col items-center justify-between gap-4 rounded-lg border border-white/10 bg-white/[0.04] p-6 shadow-none backdrop-blur-xl sm:flex-row">
           <div>
-            <h3 className="font-semibold text-gray-900 mb-1">Ready to apply?</h3>
-            <p className="text-sm text-gray-600">Visit the official website to start your application</p>
+            <h3 className="mb-1 font-semibold text-white">Ready to apply?</h3>
+            <p className="text-sm text-emerald-50/55">Visit the official website to start your application</p>
           </div>
           <div className="flex gap-3">
             <Button
               variant="outline"
               onClick={() => window.open(scheme.officialWebsite, '_blank')}
+              className="border-white/10 bg-white/[0.04] text-emerald-50 hover:border-emerald-400/20 hover:bg-white/[0.07] hover:text-white"
             >
               {content[language].visitWebsite}
-              <ExternalLink className="w-4 h-4 ml-2" />
+              <ExternalLink className="ml-2 h-4 w-4" />
             </Button>
-            <Button onClick={() => window.open(scheme.officialWebsite, '_blank')}>
+            <Button onClick={() => window.open(scheme.officialWebsite, '_blank')} className="bg-emerald-400 text-[#06100c] hover:bg-emerald-300">
               {content[language].applyNow}
             </Button>
           </div>
+        </div>
         </div>
       </div>
     </div>

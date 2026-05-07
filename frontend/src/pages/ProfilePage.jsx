@@ -25,7 +25,6 @@ const ProfilePage = ({ language, setLanguage }) => {
   const { user } = useAuth()
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   
-  // Mock data - will be replaced with real data from backend
   const [savedSchemes, setSavedSchemes] = useState([
     {
       id: 1,
@@ -158,19 +157,31 @@ const ProfilePage = ({ language, setLanguage }) => {
 
   const readyDocuments = documents.filter(doc => doc.hasDocument).length
   const totalDocuments = documents.length
+  const profileItems = [
+    { iconElement: <Calendar className="h-4 w-4 text-emerald-400/80" />, label: content[language].age, value: `${userProfile.age} ${content[language].years}` },
+    { iconElement: <IndianRupee className="h-4 w-4 text-emerald-400/80" />, label: content[language].income, value: `₹${(userProfile.income / 1000).toFixed(1)}K` },
+    { iconElement: <MapPin className="h-4 w-4 text-emerald-400/80" />, label: content[language].state, value: language === 'en' ? userProfile.state : userProfile.stateHi },
+    { iconElement: <Briefcase className="h-4 w-4 text-emerald-400/80" />, label: content[language].occupation, value: language === 'en' ? userProfile.occupation : userProfile.occupationHi },
+    { iconElement: <Users className="h-4 w-4 text-emerald-400/80" />, label: content[language].familySize, value: `${userProfile.familySize} ${content[language].members}` },
+    { iconElement: <Home className="h-4 w-4 text-emerald-400/80" />, label: content[language].disability, value: userProfile.hasDisability ? content[language].yes : content[language].no },
+  ]
 
   if (!user) {
     return (
-      <div className="min-h-screen pattern-dots">
+      <div className="min-h-screen bg-[#07110d] text-white">
         <Navbar language={language} setLanguage={setLanguage} />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+        <div className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(16,185,129,0.08),transparent_30%)]" />
+          <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-lg rounded-lg border border-white/10 bg-white/[0.04] p-8 text-center backdrop-blur-xl">
+            <User className="mx-auto mb-4 h-10 w-10 text-emerald-400/80" />
+            <h2 className="mb-4 text-2xl font-semibold text-white">
               Please log in to view your dashboard
             </h2>
             <Link to="/login">
-              <Button>Go to Login</Button>
+              <Button className="bg-emerald-500/85! text-white! hover:bg-emerald-400/90!">Go to Login</Button>
             </Link>
+          </div>
           </div>
         </div>
       </div>
@@ -178,126 +189,97 @@ const ProfilePage = ({ language, setLanguage }) => {
   }
 
   return (
-    <div className="min-h-screen pattern-dots">
+    <div className="min-h-screen bg-[#07110d] text-white">
       <Navbar language={language} setLanguage={setLanguage} />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        {/* Header */}
+      <main className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_8%_12%,rgba(16,185,129,0.08),transparent_28%)]" />
+
+      <div className="relative mx-auto max-w-7xl px-4 pb-10 pt-12 sm:px-6 sm:pt-14 lg:px-8 lg:pt-16">
         <div className="mb-6 sm:mb-8">
-          <Link to="/" className="inline-flex items-center text-gray-600 hover:text-gov-blue-600 mb-3 sm:mb-4">
-            <ArrowLeft className="w-4 h-4 mr-2" />
+          <Link to="/" className="mb-4 inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.045] px-3 py-2 text-sm text-emerald-50/70 transition-all hover:border-emerald-400/20 hover:bg-white/[0.08] hover:text-white">
+            <ArrowLeft className="h-4 w-4 text-emerald-400/80" />
             {content[language].backToHome}
           </Link>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+          <div className="grid gap-4 lg:grid-cols-[1fr_340px] lg:items-end">
+            <div>
+          <h1 className="mb-2 text-3xl font-semibold leading-tight text-white sm:text-4xl md:text-5xl">
             {content[language].dashboard}
           </h1>
-          <p className="text-gray-600">
+          <p className="text-emerald-50/65">
             {content[language].welcome}, {user.name}!
           </p>
+            </div>
+            <div className="grid grid-cols-3 gap-2 rounded-lg border border-white/10 bg-white/[0.04] p-2 backdrop-blur-xl">
+              <div className="rounded-md bg-black/14 p-3">
+                <Bookmark className="mb-2 h-4 w-4 text-emerald-400/80" />
+                <p className="text-xl font-semibold text-white">{savedSchemes.length}</p>
+                <p className="text-[11px] text-emerald-50/50">Saved</p>
+              </div>
+              <div className="rounded-md bg-black/14 p-3">
+                <FileText className="mb-2 h-4 w-4 text-emerald-400/80" />
+                <p className="text-xl font-semibold text-white">{readyDocuments}/{totalDocuments}</p>
+                <p className="text-[11px] text-emerald-50/50">Docs</p>
+              </div>
+              <div className="rounded-md bg-black/14 p-3">
+                <CheckCircle2 className="mb-2 h-4 w-4 text-emerald-400/80" />
+                <p className="text-xl font-semibold text-white">{Math.round((readyDocuments / totalDocuments) * 100)}%</p>
+                <p className="text-[11px] text-emerald-50/50">Ready</p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          {/* Eligibility Profile Card */}
-          <Card className="lg:col-span-1">
+          <Card className="rounded-lg border border-white/10 bg-white/[0.04] text-white shadow-none backdrop-blur-xl lg:col-span-1">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <User className="w-5 h-5 text-gov-blue-600" />
+              <CardTitle className="flex items-center gap-2 text-white">
+                <User className="h-5 w-5 text-emerald-400/80" />
                 {content[language].eligibilityProfile}
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-emerald-50/55">
                 {content[language].eligibilityProfileDesc}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex items-center justify-between py-3 border-b border-gray-100">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-600">{content[language].age}</span>
+              {profileItems.map(({ iconElement, label, value }) => (
+                <div key={label} className="flex items-center justify-between rounded-md border border-white/10 bg-black/14 px-3 py-3">
+                  <div className="flex items-center gap-2">
+                    {iconElement}
+                    <span className="text-sm text-emerald-50/60">{label}</span>
+                  </div>
+                  <span className="text-right text-sm font-semibold text-white">{value}</span>
                 </div>
-                <span className="font-semibold text-gray-900">
-                  {userProfile.age} {content[language].years}
-                </span>
-              </div>
+              ))}
 
-              <div className="flex items-center justify-between py-3 border-b border-gray-100">
-                <div className="flex items-center gap-2">
-                  <IndianRupee className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-600">{content[language].income}</span>
-                </div>
-                <span className="font-semibold text-gray-900">
-                  ₹{(userProfile.income / 1000).toFixed(1)}K
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between py-3 border-b border-gray-100">
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-600">{content[language].state}</span>
-                </div>
-                <span className="font-semibold text-gray-900">
-                  {language === 'en' ? userProfile.state : userProfile.stateHi}
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between py-3 border-b border-gray-100">
-                <div className="flex items-center gap-2">
-                  <Briefcase className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-600">{content[language].occupation}</span>
-                </div>
-                <span className="font-semibold text-gray-900">
-                  {language === 'en' ? userProfile.occupation : userProfile.occupationHi}
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between py-3 border-b border-gray-100">
-                <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-600">{content[language].familySize}</span>
-                </div>
-                <span className="font-semibold text-gray-900">
-                  {userProfile.familySize} {content[language].members}
-                </span>
-              </div>
-
-              <div className="flex items-center justify-between py-3">
-                <div className="flex items-center gap-2">
-                  <Home className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-600">{content[language].disability}</span>
-                </div>
-                <span className="font-semibold text-gray-900">
-                  {userProfile.hasDisability ? content[language].yes : content[language].no}
-                </span>
-              </div>
-
-              <Button className="w-full mt-4" onClick={() => setIsEditModalOpen(true)}>
+              <Button className="mt-4 h-10 w-full bg-emerald-500/85! text-white! hover:bg-emerald-400/90!" onClick={() => setIsEditModalOpen(true)}>
                 <Edit className="w-4 h-4 mr-2" />
                 {content[language].editProfile}
               </Button>
             </CardContent>
           </Card>
 
-          {/* Document Status Card */}
-          <Card className="lg:col-span-2">
+          <Card className="rounded-lg border border-white/10 bg-white/[0.04] text-white shadow-none backdrop-blur-xl lg:col-span-2">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="w-5 h-5 text-gov-blue-600" />
+              <CardTitle className="flex items-center gap-2 text-white">
+                <FileText className="h-5 w-5 text-emerald-400/80" />
                 {content[language].documentStatus}
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-emerald-50/55">
                 {content[language].documentStatusDesc}
               </CardDescription>
               <div className="mt-4">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-sm font-medium text-emerald-50/68">
                     {readyDocuments}/{totalDocuments} {content[language].documentsReady}
                   </span>
-                  <span className="text-sm font-medium text-gov-blue-600">
+                  <span className="text-sm font-medium text-emerald-400/80">
                     {Math.round((readyDocuments / totalDocuments) * 100)}%
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
                   <div 
-                    className="bg-gov-blue-600 h-2 rounded-full transition-all duration-300"
+                    className="h-full rounded-full bg-emerald-400/70 transition-all duration-300"
                     style={{ width: `${(readyDocuments / totalDocuments) * 100}%` }}
                   />
                 </div>
@@ -309,24 +291,24 @@ const ProfilePage = ({ language, setLanguage }) => {
                   <button
                     key={doc.id}
                     onClick={() => toggleDocument(doc.id)}
-                    className={`flex items-center gap-3 p-4 rounded-lg border-2 transition-all text-left ${
+                    className={`flex items-center gap-3 rounded-lg border p-4 text-left transition-all ${
                       doc.hasDocument
-                        ? 'border-green-200 bg-green-50 hover:bg-green-100'
-                        : 'border-gray-200 bg-white hover:bg-gray-50'
+                        ? 'border-emerald-400/20 bg-emerald-400/8 hover:bg-emerald-400/10'
+                        : 'border-white/10 bg-black/14 hover:border-emerald-400/20 hover:bg-white/[0.06]'
                     }`}
                   >
                     {doc.hasDocument ? (
-                      <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                      <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-emerald-400/80" />
                     ) : (
-                      <XCircle className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                      <XCircle className="h-5 w-5 flex-shrink-0 text-emerald-50/35" />
                     )}
                     <div className="flex-1 min-w-0">
                       <p className={`text-sm font-medium truncate ${
-                        doc.hasDocument ? 'text-green-900' : 'text-gray-700'
+                        doc.hasDocument ? 'text-white' : 'text-emerald-50/70'
                       }`}>
                         {language === 'en' ? doc.name : doc.nameHi}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-emerald-50/45">
                         {doc.hasDocument ? content[language].available : content[language].notAvailable}
                       </p>
                     </div>
@@ -337,24 +319,23 @@ const ProfilePage = ({ language, setLanguage }) => {
           </Card>
         </div>
 
-        {/* Saved Schemes Section */}
-        <Card>
+        <Card className="rounded-lg border border-white/10 bg-white/[0.04] text-white shadow-none backdrop-blur-xl">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Bookmark className="w-5 h-5 text-gov-blue-600" />
+            <CardTitle className="flex items-center gap-2 text-white">
+              <Bookmark className="h-5 w-5 text-emerald-400/80" />
               {content[language].savedSchemes}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-emerald-50/55">
               {content[language].savedSchemesDesc}
             </CardDescription>
           </CardHeader>
           <CardContent>
             {savedSchemes.length === 0 ? (
-              <div className="text-center py-12">
-                <Bookmark className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500">{content[language].noSchemes}</p>
+              <div className="py-12 text-center">
+                <Bookmark className="mx-auto mb-4 h-12 w-12 text-emerald-50/30" />
+                <p className="text-emerald-50/55">{content[language].noSchemes}</p>
                 <Link to="/discover" className="mt-4 inline-block">
-                  <Button>Discover Schemes</Button>
+                  <Button className="bg-emerald-500/85! text-white! hover:bg-emerald-400/90!">Discover Schemes</Button>
                 </Link>
               </div>
             ) : (
@@ -362,14 +343,14 @@ const ProfilePage = ({ language, setLanguage }) => {
                 {savedSchemes.map((scheme) => (
                   <div
                     key={scheme.id}
-                    className="border border-gray-200 rounded-lg p-5 bg-white hover:shadow-md transition-shadow"
+                    className="rounded-lg border border-white/10 bg-black/14 p-5 transition-all hover:border-emerald-400/20 hover:bg-white/[0.05]"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900 mb-1">
+                        <h3 className="mb-2 font-semibold leading-6 text-white">
                           {language === 'en' ? scheme.name : scheme.nameHi}
                         </h3>
-                        <span className="inline-block px-2 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded">
+                        <span className="inline-block rounded-full border border-emerald-400/16 bg-emerald-400/8 px-2.5 py-1 text-xs font-medium text-emerald-50/80">
                           {language === 'en' ? scheme.category : scheme.categoryHi}
                         </span>
                       </div>
@@ -377,22 +358,22 @@ const ProfilePage = ({ language, setLanguage }) => {
                     
                     <div className="space-y-2 mb-4">
                       <div className="flex items-center gap-2 text-sm">
-                        <IndianRupee className="w-4 h-4 text-gray-400" />
-                        <span className="text-gray-600">{content[language].benefit}:</span>
-                        <span className="font-medium text-gray-900">
+                        <IndianRupee className="h-4 w-4 text-emerald-400/80" />
+                        <span className="text-emerald-50/55">{content[language].benefit}:</span>
+                        <span className="font-medium text-white">
                           {language === 'en' ? scheme.benefit : scheme.benefitHi}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 text-sm">
-                        <Calendar className="w-4 h-4 text-gray-400" />
-                        <span className="text-gray-600">{content[language].deadline}:</span>
-                        <span className="font-medium text-gray-900">{scheme.deadline}</span>
+                        <Calendar className="h-4 w-4 text-emerald-400/80" />
+                        <span className="text-emerald-50/55">{content[language].deadline}:</span>
+                        <span className="font-medium text-white">{scheme.deadline}</span>
                       </div>
                     </div>
 
                     <div className="flex gap-2">
                       <Link to={`/scheme/${scheme.id}`} className="flex-1">
-                        <Button variant="outline" className="w-full" size="sm">
+                        <Button variant="outline" className="w-full border-white/10 bg-white/[0.04] text-emerald-50 hover:border-emerald-400/20 hover:bg-white/[0.06] hover:text-white" size="sm">
                           {content[language].viewDetails}
                         </Button>
                       </Link>
@@ -400,7 +381,7 @@ const ProfilePage = ({ language, setLanguage }) => {
                         variant="outline"
                         size="sm"
                         onClick={() => removeScheme(scheme.id)}
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200 border-2"
+                        className="border border-red-300/20 bg-red-500/8 text-red-300 hover:bg-red-500/12 hover:text-red-200"
                       >
                         {content[language].removeScheme}
                       </Button>
@@ -420,6 +401,7 @@ const ProfilePage = ({ language, setLanguage }) => {
         setUserProfile={setUserProfile}
         language={language}
       />
+      </main>
     </div>
   )
 }

@@ -79,7 +79,6 @@ const EditProfileModal = ({ isOpen, onClose, userProfile, setUserProfile, langua
     e.preventDefault()
     setLoading(true)
     
-    // Simulate API call
     setTimeout(() => {
       setUserProfile(formData)
       setLoading(false)
@@ -91,20 +90,25 @@ const EditProfileModal = ({ isOpen, onClose, userProfile, setUserProfile, langua
     setFormData({ ...formData, [field]: value })
   }
 
+  const inputClassName = "h-11 rounded-lg border-white/10 bg-black/24 text-white placeholder:text-emerald-50/35"
+  const labelClassName = "text-emerald-50/75"
+  const selectTriggerClassName = "h-11 rounded-lg border-white/10 bg-black/24 text-white hover:border-emerald-400/20 data-[placeholder]:text-emerald-50/35 [&_svg]:text-emerald-400/80"
+  const selectContentClassName = "rounded-lg border-white/10 bg-[#07110d]/96 p-1 text-emerald-50 shadow-none backdrop-blur-xl"
+  const selectItemClassName = "rounded-md py-2.5 pl-8 pr-3 text-sm text-emerald-50/78 focus:bg-emerald-400/8 focus:text-white data-[state=checked]:bg-emerald-400/8 data-[state=checked]:text-emerald-50/80 [&_svg]:text-emerald-400/80"
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-h-[90vh] overflow-y-auto border-white/10 bg-[#07110d]/96 text-white shadow-none backdrop-blur-xl sm:max-w-2xl [&>button]:text-emerald-50/70 [&>button]:hover:text-white">
         <DialogHeader>
-          <DialogTitle className="text-2xl">{content[language].title}</DialogTitle>
-          <DialogDescription>{content[language].description}</DialogDescription>
+          <DialogTitle className="text-2xl text-white">{content[language].title}</DialogTitle>
+          <DialogDescription className="text-emerald-50/58">{content[language].description}</DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-6 mt-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Age */}
             <div className="space-y-2">
-              <Label htmlFor="age">
-                <Calendar className="inline w-4 h-4 mr-2 text-gray-500" />
+              <Label htmlFor="age" className={labelClassName}>
+                <Calendar className="inline w-4 h-4 mr-2 text-emerald-400/80" />
                 {content[language].age}
               </Label>
               <Input
@@ -115,14 +119,14 @@ const EditProfileModal = ({ isOpen, onClose, userProfile, setUserProfile, langua
                 placeholder={content[language].agePlaceholder}
                 value={formData.age}
                 onChange={(e) => handleChange('age', parseInt(e.target.value))}
+                className={inputClassName}
                 required
               />
             </div>
 
-            {/* Annual Income */}
             <div className="space-y-2">
-              <Label htmlFor="income">
-                <IndianRupee className="inline w-4 h-4 mr-2 text-gray-500" />
+              <Label htmlFor="income" className={labelClassName}>
+                <IndianRupee className="inline w-4 h-4 mr-2 text-emerald-400/80" />
                 {content[language].income}
               </Label>
               <Input
@@ -132,23 +136,23 @@ const EditProfileModal = ({ isOpen, onClose, userProfile, setUserProfile, langua
                 placeholder={content[language].incomePlaceholder}
                 value={formData.income}
                 onChange={(e) => handleChange('income', parseInt(e.target.value))}
+                className={inputClassName}
                 required
               />
             </div>
 
-            {/* State */}
             <div className="space-y-2">
-              <Label htmlFor="state">
-                <MapPin className="inline w-4 h-4 mr-2 text-gray-500" />
+              <Label htmlFor="state" className={labelClassName}>
+                <MapPin className="inline w-4 h-4 mr-2 text-emerald-400/80" />
                 {content[language].state}
               </Label>
               <Select value={formData.state} onValueChange={(value) => handleChange('state', value)}>
-                <SelectTrigger>
+                <SelectTrigger className={selectTriggerClassName}>
                   <SelectValue placeholder={content[language].statePlaceholder} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className={selectContentClassName}>
                   {states.map((state) => (
-                    <SelectItem key={state.value} value={state.value}>
+                    <SelectItem key={state.value} value={state.value} className={selectItemClassName}>
                       {language === 'en' ? state.label : state.labelHi}
                     </SelectItem>
                   ))}
@@ -156,19 +160,18 @@ const EditProfileModal = ({ isOpen, onClose, userProfile, setUserProfile, langua
               </Select>
             </div>
 
-            {/* Occupation */}
             <div className="space-y-2">
-              <Label htmlFor="occupation">
-                <Briefcase className="inline w-4 h-4 mr-2 text-gray-500" />
+              <Label htmlFor="occupation" className={labelClassName}>
+                <Briefcase className="inline w-4 h-4 mr-2 text-emerald-400/80" />
                 {content[language].occupation}
               </Label>
               <Select value={formData.occupation} onValueChange={(value) => handleChange('occupation', value)}>
-                <SelectTrigger>
+                <SelectTrigger className={selectTriggerClassName}>
                   <SelectValue placeholder={content[language].occupationPlaceholder} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className={selectContentClassName}>
                   {occupations.map((occ) => (
-                    <SelectItem key={occ.value} value={occ.value}>
+                    <SelectItem key={occ.value} value={occ.value} className={selectItemClassName}>
                       {language === 'en' ? occ.label : occ.labelHi}
                     </SelectItem>
                   ))}
@@ -176,10 +179,9 @@ const EditProfileModal = ({ isOpen, onClose, userProfile, setUserProfile, langua
               </Select>
             </div>
 
-            {/* Family Size */}
             <div className="space-y-2">
-              <Label htmlFor="familySize">
-                <Users className="inline w-4 h-4 mr-2 text-gray-500" />
+              <Label htmlFor="familySize" className={labelClassName}>
+                <Users className="inline w-4 h-4 mr-2 text-emerald-400/80" />
                 {content[language].familySize}
               </Label>
               <Input
@@ -190,42 +192,42 @@ const EditProfileModal = ({ isOpen, onClose, userProfile, setUserProfile, langua
                 placeholder={content[language].familySizePlaceholder}
                 value={formData.familySize}
                 onChange={(e) => handleChange('familySize', parseInt(e.target.value))}
+                className={inputClassName}
                 required
               />
             </div>
 
-            {/* Disability */}
             <div className="space-y-2">
-              <Label htmlFor="disability">
-                <Home className="inline w-4 h-4 mr-2 text-gray-500" />
+              <Label htmlFor="disability" className={labelClassName}>
+                <Home className="inline w-4 h-4 mr-2 text-emerald-400/80" />
                 {content[language].disability}
               </Label>
               <Select 
                 value={formData.hasDisability ? 'yes' : 'no'} 
                 onValueChange={(value) => handleChange('hasDisability', value === 'yes')}
               >
-                <SelectTrigger>
+                <SelectTrigger className={selectTriggerClassName}>
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="no">{content[language].no}</SelectItem>
-                  <SelectItem value="yes">{content[language].yes}</SelectItem>
+                <SelectContent className={selectContentClassName}>
+                  <SelectItem value="no" className={selectItemClassName}>{content[language].no}</SelectItem>
+                  <SelectItem value="yes" className={selectItemClassName}>{content[language].yes}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex gap-3 justify-end pt-4 border-t">
+          <div className="flex gap-3 justify-end pt-4 border-t border-white/10">
             <Button
               type="button"
               variant="outline"
               onClick={onClose}
               disabled={loading}
+              className="border-white/10 bg-white/[0.04] text-emerald-50 hover:border-emerald-400/20 hover:bg-white/[0.06] hover:text-white"
             >
               {content[language].cancel}
             </Button>
-            <Button type="submit" disabled={loading}>
+            <Button type="submit" disabled={loading} className="bg-emerald-500/85! text-white! hover:bg-emerald-400/90!">
               {loading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
