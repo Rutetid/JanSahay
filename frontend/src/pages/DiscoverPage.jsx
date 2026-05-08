@@ -794,9 +794,9 @@ const DiscoverPage = ({ language, setLanguage }) => {
                 </div>
               </div>
 
-              <div className="mt-6 grid grid-cols-2 gap-2">
-                {profileSnapshot.map(({ label, value, iconElement }) => (
-                  <div key={label} className="min-h-24 rounded-md border border-white/10 bg-black/18 p-3">
+              <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-2">
+                {profileSnapshot.slice(0, 4).map(({ label, value, iconElement }) => (
+                  <div key={label} className="min-h-20 rounded-md border border-white/10 bg-black/18 p-3 sm:min-h-24">
                     {iconElement}
                     <p className="text-[11px] font-medium uppercase text-emerald-50/45">{label}</p>
                     <p className="mt-1 line-clamp-2 text-sm capitalize text-white">{value}</p>
@@ -819,7 +819,7 @@ const DiscoverPage = ({ language, setLanguage }) => {
                     key={step.id}
                     type="button"
                     onClick={() => index < currentStep && setCurrentStep(index)}
-                    className={`flex h-11 min-w-0 flex-1 items-center justify-center rounded-md border transition-all ${
+                    className={`flex h-9 min-w-0 flex-1 items-center justify-center rounded-md border transition-all sm:h-11 ${
                       isActive
                         ? 'border-emerald-300/40 bg-emerald-300/12 text-emerald-100 shadow-[0_0_26px_rgba(16,185,129,0.16)]'
                         : isComplete
@@ -835,8 +835,8 @@ const DiscoverPage = ({ language, setLanguage }) => {
             </div>
 
             {/* Question Card */}
-            <Card className="min-h-[520px] overflow-hidden rounded-lg border border-white/10 bg-white/[0.065] text-white shadow-none backdrop-blur-xl hover:shadow-none">
-              <CardContent className="flex min-h-[430px] flex-col p-5 sm:p-8">
+            <Card className="min-h-[400px] overflow-hidden rounded-lg border border-white/10 bg-white/[0.065] text-white shadow-none backdrop-blur-xl hover:shadow-none sm:min-h-[520px]">
+              <CardContent className="flex min-h-[320px] flex-col p-5 sm:min-h-[430px] sm:p-8">
             <div className="mb-7 flex items-start gap-4">
               <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-md border border-emerald-300/20 bg-emerald-300/10">
                 <Icon className="h-7 w-7 text-emerald-300" />

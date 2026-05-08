@@ -167,22 +167,18 @@ const LoginPage = ({ language = 'en' }) => {
         </div>
       </div>
 
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8 lg:p-12">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 pt-8 sm:p-8 lg:p-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
           className="w-full max-w-md"
         >
-          <div className="lg:hidden mb-8 text-center">
-            <Link to="/" className="inline-flex items-center gap-2 text-emerald-300 hover:text-emerald-200 mb-6">
-              <Sparkles className="w-6 h-6" />
-              <span className="text-xl font-bold">JanSahay</span>
+          <div className="lg:hidden mb-6 text-center">
+            <Link to="/" className="inline-flex items-center gap-2 text-emerald-300 hover:text-emerald-200">
+              <Sparkles className="w-7 h-7" />
+              <span className="text-2xl font-bold">JanSahay</span>
             </Link>
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-xs font-medium text-emerald-100">
-              <Sparkles className="h-3.5 w-3.5" />
-              {language === 'en' ? 'Smart eligibility platform' : 'स्मार्ट पात्रता प्लेटफॉर्म'}
-            </div>
           </div>
 
           <div className="rounded-lg border border-white/10 bg-white/[0.055] backdrop-blur-xl p-6 sm:p-8 shadow-none">

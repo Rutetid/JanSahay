@@ -71,6 +71,16 @@ return (
                   <span className="text-xl font-bold text-white">JanSahay</span>
                 </Link>
 
+                {user ? (
+                  <button
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden"
+                  >
+                    <div className="flex h-9 w-9 items-center justify-center rounded-md border border-emerald-200/25 bg-emerald-300/12 text-sm font-semibold text-emerald-200">
+                      {getInitials(user.name)}
+                    </div>
+                  </button>
+                ) : (
                 <button
                   onClick={() => setMenuState(!menuState)}
                   aria-label={menuState == true ? 'Close Menu' : 'Open Menu'}
@@ -79,10 +89,11 @@ return (
                   <Menu className={`m-auto size-6 text-white duration-200 ${menuState ? 'rotate-180 scale-0 opacity-0' : ''}`} />
                   <X className={`absolute inset-0 m-auto size-6 text-white ${menuState ? 'rotate-0 scale-100 opacity-100' : '-rotate-180 scale-0 opacity-0'} duration-200`} />
                 </button>
+                )}
               </div>
 
-              <div className={`${menuState ? 'block' : ''} mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-lg border border-white/10 bg-[#07110d]/92 p-6 shadow-xl backdrop-blur-xl md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:!bg-transparent lg:p-0 lg:shadow-none lg:backdrop-blur-none`}>
-                <div className="lg:pr-4">
+              <div className={`${menuState ? 'block' : 'hidden'} mb-6 w-full flex-wrap items-center justify-end space-y-6 rounded-lg border border-white/10 bg-[#07110d]/92 p-5 shadow-xl backdrop-blur-xl md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:!bg-transparent lg:p-0 lg:shadow-none lg:backdrop-blur-none`}>
+                <div className="hidden lg:pr-4 lg:block">
                   <ul className="space-y-6 text-base lg:flex lg:gap-8 lg:space-y-0 lg:text-sm">
                     {menuItems.map((item, index) => (
                       <li key={index}>
@@ -141,12 +152,12 @@ return (
                     </div>
                   ) : (
                     <>
-                      <Button asChild size="sm" className="h-9 border border-white/12 bg-white/[0.055]! px-3 text-emerald-50! shadow-none backdrop-blur-xl transition-all duration-300 hover:border-emerald-300/25 hover:bg-white/[0.09]! hover:text-white!">
+                      <Button asChild size="sm" className="h-10 sm:h-9 border border-white/12 bg-white/[0.055]! px-4 sm:px-3 text-emerald-50! shadow-none backdrop-blur-xl transition-all duration-300 hover:border-emerald-300/25 hover:bg-white/[0.09]! hover:text-white!">
                         <Link to="/login">
                           <span>{c.login}</span>
                         </Link>
                       </Button>
-                      <Button asChild size="sm" className="h-9 border border-emerald-200/30 bg-emerald-300! px-3 text-[#06100c]! shadow-[0_10px_30px_-18px_rgba(16,185,129,0.9)] transition-all duration-300 hover:border-lime-200/50 hover:bg-lime-300! hover:text-[#06100c]! hover:shadow-[0_12px_34px_-16px_rgba(190,242,100,0.95)]">
+                      <Button asChild size="sm" className="h-10 sm:h-9 border border-emerald-200/30 bg-emerald-300! px-4 sm:px-3 text-[#06100c]! shadow-[0_10px_30px_-18px_rgba(16,185,129,0.9)] transition-all duration-300 hover:border-lime-200/50 hover:bg-lime-300! hover:text-[#06100c]! hover:shadow-[0_12px_34px_-16px_rgba(190,242,100,0.95)]">
                         <Link to="/discover">
                           <span>{c.cta}</span>
                         </Link>
@@ -160,9 +171,47 @@ return (
         </nav>
       </header>
 
+      {user && isDropdownOpen && (
+        <div className="fixed inset-x-0 top-16 z-40 max-h-[calc(100vh-4rem)] overflow-y-auto border-b border-white/10 bg-[#07110d]/96 shadow-[0_24px_80px_rgba(0,0,0,0.34)] backdrop-blur-xl lg:hidden">
+          <div className="px-4 py-4 space-y-2">
+            <div className="mb-2 flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.045] px-4 py-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-md border border-emerald-200/25 bg-emerald-300/12 font-semibold text-emerald-200">
+                {getInitials(user.name)}
+              </div>
+              <div>
+                <p className="font-semibold text-white">{user.name}</p>
+                {user.email && <p className="text-sm text-emerald-50/45">{user.email}</p>}
+              </div>
+            </div>
+            <Link
+              to="/profile"
+              onClick={() => setIsDropdownOpen(false)}
+              className="flex w-full items-center gap-2 rounded-lg px-4 py-3 text-left font-medium text-emerald-50/78 transition-all hover:bg-white/[0.07] hover:text-white"
+            >
+              <User size={18} className="text-emerald-300" />
+              <span>{language === 'hi' ? 'प्रोफ़ाइल' : 'Profile'}</span>
+            </Link>
+            <button
+              onClick={() => setIsDropdownOpen(false)}
+              className="flex w-full items-center gap-2 rounded-lg px-4 py-3 text-left font-medium text-emerald-50/78 transition-all hover:bg-white/[0.07] hover:text-white"
+            >
+              <Settings size={18} className="text-emerald-300" />
+              <span>{language === 'hi' ? 'सेटिंग्स' : 'Settings'}</span>
+            </button>
+            <button
+              onClick={handleLogout}
+              className="flex w-full items-center gap-2 rounded-lg px-4 py-3 text-left font-medium text-red-300 transition-all hover:bg-red-500/12 hover:text-red-200"
+            >
+              <LogOut size={18} />
+              <span>{language === 'hi' ? 'लॉग आउट' : 'Logout'}</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Hero */}
       <main>
-        <section className="relative overflow-hidden pt-28 lg:pt-24">
+        <section className="relative overflow-hidden pt-20 sm:pt-28 lg:pt-24">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:44px_44px] opacity-35" />
           <div className="absolute inset-x-0 top-0 h-[620px] bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.22),transparent_58%)]" />
           <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 pb-10 pt-12 sm:px-6 lg:grid-cols-[1fr_430px] lg:px-8 lg:pb-16 lg:pt-20">
@@ -286,7 +335,7 @@ return (
               ].map((stat, i) => {
                 const Icon = stat.icon
                 return (
-                <div key={i} className="flex min-h-40 flex-col items-center justify-center rounded-lg border border-white/10 bg-white/[0.055] p-8 backdrop-blur-xl transition-all hover:-translate-y-1 hover:border-emerald-300/35 hover:bg-white/[0.08]">
+                <div key={i} className="flex min-h-32 flex-col items-center justify-center rounded-lg border border-white/10 bg-white/[0.055] p-8 backdrop-blur-xl transition-all hover:-translate-y-1 hover:border-emerald-300/35 hover:bg-white/[0.08] sm:min-h-40">
                   <Icon className="mb-3 h-8 w-8 text-emerald-300" />
                   <div className="text-4xl font-semibold text-white">{stat.value}</div>
                   <div className="mt-2 text-emerald-50/55">{stat.label}</div>
