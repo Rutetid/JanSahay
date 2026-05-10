@@ -767,26 +767,26 @@ const DiscoverPage = ({ language, setLanguage }) => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_8%_18%,rgba(16,185,129,0.20),transparent_28%),radial-gradient(circle_at_92%_4%,rgba(250,204,21,0.12),transparent_24%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:44px_44px] opacity-35" />
 
-        <div className="relative mx-auto grid max-w-7xl gap-6 px-4 pb-8 pt-20 sm:px-6 sm:pt-24 lg:grid-cols-[360px_1fr] lg:px-8 lg:pb-12 lg:pt-28">
+        <div className="relative mx-auto grid max-w-7xl gap-6 px-4 pb-8 pt-14 sm:px-6 sm:pt-24 lg:grid-cols-[360px_1fr] lg:px-8 lg:pb-12 lg:pt-28">
           <aside className="lg:sticky lg:top-24 lg:h-fit">
-            <div className="rounded-lg border border-white/10 bg-white/[0.055] p-5 shadow-none backdrop-blur-xl">
+            <div className="rounded-lg border border-white/10 bg-white/[0.055] p-4 shadow-none backdrop-blur-xl sm:p-5">
               <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-xs font-medium text-emerald-100">
                 <Sparkles className="h-3.5 w-3.5 text-emerald-300" />
                 {language === 'en' ? 'Smart eligibility checker' : 'स्मार्ट पात्रता जांच'}
               </div>
-              <h1 className="mt-5 text-3xl font-semibold leading-tight text-white sm:text-4xl lg:text-5xl">
+              <h1 className="mt-4 text-2xl font-semibold leading-tight text-white sm:text-4xl lg:text-5xl">
                 {content[language].title}
               </h1>
-              <p className="mt-4 text-sm leading-6 text-emerald-50/70">
+              <p className="mt-3 text-sm leading-6 text-emerald-50/70">
                 {content[language].subtitle}
               </p>
 
-              <div className="mt-6">
+              <div className="mt-4">
                 <div className="mb-2 flex items-center justify-between text-xs text-emerald-50/60">
                   <span>{language === 'en' ? 'Question' : 'प्रश्न'} {currentStep + 1}/{totalSteps}</span>
                   <span>{Math.round(progress)}%</span>
                 </div>
-                <div className="h-2 overflow-hidden rounded-full bg-white/10">
+                <div className="h-1.5 overflow-hidden rounded-full bg-white/10 sm:h-2">
                   <div
                     className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-lime-300 to-amber-300 transition-all duration-500"
                     style={{ width: `${progress}%` }}
@@ -794,9 +794,9 @@ const DiscoverPage = ({ language, setLanguage }) => {
                 </div>
               </div>
 
-              <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-2">
+              <div className="mt-4 grid grid-cols-2 gap-2 sm:mt-6">
                 {profileSnapshot.slice(0, 4).map(({ label, value, iconElement }) => (
-                  <div key={label} className="min-h-20 rounded-md border border-white/10 bg-black/18 p-3 sm:min-h-24">
+                  <div key={label} className="min-h-16 rounded-md border border-white/10 bg-black/18 p-2 sm:min-h-24 sm:p-3">
                     {iconElement}
                     <p className="text-[11px] font-medium uppercase text-emerald-50/45">{label}</p>
                     <p className="mt-1 line-clamp-2 text-sm capitalize text-white">{value}</p>
@@ -806,8 +806,7 @@ const DiscoverPage = ({ language, setLanguage }) => {
             </div>
           </aside>
 
-          <section>
-            {/* Step indicators */}
+          <section className="lg:flex lg:flex-col">
             <div className="mb-4 flex gap-2 sm:mb-5">
               {steps.map((step, index) => {
                 const StepIcon = step.icon
@@ -835,8 +834,8 @@ const DiscoverPage = ({ language, setLanguage }) => {
             </div>
 
             {/* Question Card */}
-            <Card className="min-h-[400px] overflow-hidden rounded-lg border border-white/10 bg-white/[0.065] text-white shadow-none backdrop-blur-xl hover:shadow-none sm:min-h-[520px]">
-              <CardContent className="flex min-h-[320px] flex-col p-5 sm:min-h-[430px] sm:p-8">
+            <Card className="min-h-[400px] overflow-hidden rounded-lg border border-white/10 bg-white/[0.065] text-white shadow-none backdrop-blur-xl hover:shadow-none lg:flex-1 flex flex-col">
+              <CardContent className="flex min-h-[320px] flex-col p-5 sm:min-h-[400px] sm:p-8 lg:min-h-0 lg:flex-1">
             <div className="mb-7 flex items-start gap-4">
               <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-md border border-emerald-300/20 bg-emerald-300/10">
                 <Icon className="h-7 w-7 text-emerald-300" />
@@ -966,7 +965,7 @@ const DiscoverPage = ({ language, setLanguage }) => {
               </CardContent>
 
         {/* Navigation Buttons */}
-        <div className="flex flex-col gap-3 border-t border-white/10 bg-black/18 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+        <div className="flex flex-row items-center justify-between gap-2 border-t border-white/10 bg-black/18 px-4 py-3 sm:px-8">
           <div className="flex gap-3">
             {currentStep > 0 && (
                 <Button
